@@ -85,7 +85,7 @@ struct racional cria_r (long numerador, long denominador)
 	  local= simplifica_r(local);
   	return local;
 }
-}
+
 
 /* Retorna 1 se o racional r for válido ou 0 se for inválido.
  * Um racional é inválido se seu denominador for zero */
