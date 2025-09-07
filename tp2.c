@@ -17,6 +17,7 @@ int main ()
   /* a completar! */
   /*defina um vetor para até 100 números racionais
   */
+  srand(0);
   int tam,n,num,den,i;
   
   struct racional vetor[tam];
