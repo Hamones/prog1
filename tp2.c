@@ -22,7 +22,9 @@ struct racional vetor[100];
   leia um valor n tal que 0 < n < 100
   */
   for (i= 0; i < n; i++)
-  scanf("%d",&n);
+    v[i].num -> 
+    scanf("%d",&n);
+    
   /* 
   preencha o vetor com n númerros racionais lidos da entrada
   (leia o numerador e o denominador de cada racional
