@@ -20,7 +20,9 @@
 /* retorna um número aleatório entre min e max, inclusive. */
 long aleat (long min, long max)
 {
-  /* implemente aqui */
+  long a;
+  a = rand()
+  return a;
 }
 
 /* Máximo Divisor Comum entre a e b      */
