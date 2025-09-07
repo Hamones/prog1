@@ -17,22 +17,23 @@ int main ()
   /* a completar! */
   /*defina um vetor para até 100 números racionais
   */
-  int tam,n; 
+  int tam,n,num,den;
   struct racional vetor[tam];
 
   /*
   leia um valor n tal que 0 < n < 100
   */
-  //opção 1
+  //opção 1:
   for (i= 0; i < (tam-1) ; i++)
     {
       v[i].num -> 0;
       v[i].den -> 0;
     }
-  //opção 2
+  //opção 2:
     for (i= 0; i < (tam-1) ; i++)
     {
-      criar_r(
+      scanf("%d %d,&num,&den);
+      criar_r(num,den);
     }
   /* 
   preencha o vetor com n númerros racionais lidos da entrada
@@ -51,7 +52,7 @@ int main ()
   for (i= 0; i < (tam-1) ; i++)
     {
       printf("VETOR= ");
-      imp
+      imprime_r(
     }
   
   /*
