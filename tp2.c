@@ -16,27 +16,14 @@ int main ()
   /* a completar! */
   /*defina um vetor para até 100 números racionais
   */
-  int *vet;
-  int tam;
-  int i;
-  tam = 100;
-  vetor = malloc (tam*sizeof(int));
-  if (!vetor)
-  {
-    printf("erro ao alocar o vetor\n");
-    return 1;
-  }
-  for (i = 0; i < tam ;i++)
-    vetor[i]= NULL;
-  //alocar dados no vetor que 
+struct racional vetor[100];
 
   /*
   leia um valor n tal que 0 < n < 100
   */
+  for (i= 0; i < n; i++)
   scanf("%d",&n);
-  if (n< 0 || n>100)
-    return 1;
-  /*
+  /* 
   preencha o vetor com n númerros racionais lidos da entrada
   (leia o numerador e o denominador de cada racional
   */
