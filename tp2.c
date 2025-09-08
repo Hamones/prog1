@@ -1,5 +1,4 @@
-/* 
- * Tipos Abstratos de Dados - TADs
+ Tipos Abstratos de Dados - TADs
  * Arquivo do programa principal, que usa o TAD racional.
  * Feito em 24/09/2024 para a disciplina CI1001 - Programação 1.
 */
@@ -26,17 +25,20 @@ int main ()
   leia um valor n tal que 0 < n < 100
   */
   //opção 1:
-  for (i= 0; i < (tam-1) ; i++)
+	scanf("%d",&tam);
+	if (tam < 0 || tam >100)
+		return1;
+  for (i= 0; i <) (tam-1) ; i++)
     {
       v[i].num -> 0;
       v[i].den -> 0;
     }
-  //opção 2:
+  /*opção 2:
     for (i= 0; i < (tam-1) ; i++)
     {
       scanf("%d %d,&num,&den);
       criar_r(v[i]);
-    }
+    }*/
   /* 
   preencha o vetor com n númerros racionais lidos da entrada
   (leia o numerador e o denominador de cada racional
