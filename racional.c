@@ -10,6 +10,8 @@
 
 /* coloque aqui seus includes (primeiro os <...>, depois os "...") */
 #include <stdio.h>
+#include <stdlib.h>
+#include "racional.h"
 
 /*
  * Implemente aqui as funcoes definidas no racionais.h; caso precise,
@@ -153,12 +155,12 @@ int compara_r (struct racional r1, struct racional r2);
 /* Retorna a soma dos racionais r1 e r2 no parametro *r3.
  * Retorna 1 se a operacao foi bem sucedida ou
  *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
-int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
+int soma_r (struct racional r1, struct racional r2, struct racional *r3)
 //usar &agregado em *r3
 {
 	struct racional local;
   
-  if (valido_r(r1) == 1|| valido (r2) == 1 || r3 == 0)
+  if (valido_r(r1) == 1|| valido_r (r2) == 1 || r3 == 0)
   {
     return 0;
   }
@@ -167,7 +169,7 @@ int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
 	local.den = (r1.den*r2.den);
 
 	local = simplifica_r(local); //não trabalha com ponteiros.
-  r3 = local;
+  	r3 = &local;
 	return 1;
 }
 
@@ -180,16 +182,16 @@ int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
 {
 	struct racional local;
   
-  if (valido_r(r1) == 1|| valido (r2) == 1 || r3 == 0)
+  if (valido_r(r1) == 1|| valido_r (r2) == 1 || r3 == 0)
   {
     return 0;
   }
   
-	local.num = (a.num*b.den) - (b.num*a.den);
-	local.den = (a.den*b.den);
+	local.num = (r1.num*r2.den) - (r2.num*r1.den);
+	local.den = (r1.den*r2.den);
 
 	local = simplifica_r(local); //não trabalha com ponteiros.
-  r3 = local;
+ 	 r3 = &local;
 	return 1;
 }
 
@@ -201,15 +203,15 @@ int multiplica_r (struct racional r1, struct racional r2, struct racional *r3)
 	struct racional local = {0,0};
 
 	if (valido_r(r1) == 0 || valido_r(r2) || r3 == 0)
-		return local;
+		return 0;
 	else
 		{		
 		local.num = (r1.num * r1.num);
-		local.den = (r2.den * r2.den;
+		local.den = (r2.den * r2.den);
 		}
 
 	local = simplifica_r(local);
-  r3 = local;
+	r3 = &local;
   return 1;
 }
 
@@ -221,7 +223,7 @@ int divide_r (struct racional r1, struct racional r2, struct racional *r3)
 	struct racional local = {0,0};
 
 	if (valido_r(r1) == 0 || valido_r(r2) || r3 == 0)
-		return local;
+		return 0;
 	else
 		{		
 		local.num = (r1.num * r2.den);
@@ -229,7 +231,7 @@ int divide_r (struct racional r1, struct racional r2, struct racional *r3)
 		}
 
 	local = simplifica_r(local);
-  r3 = local;
+  r3 = &local;
   return 1;
 }
   
