@@ -50,11 +50,8 @@ int main ()
   (leia o numerador e o denominador de cada racional
   */
   for (i= 0; i < tam ; i++)
-    { printf("scanf funcionou deve funcionar...");
-      printf("\n");
-      scanf("%ld",&n); //adição de script1
-      printf("scanf funcionou");
-      printf("\n");
+    { 
+      scanf("%ld",&n)
       v[i].num = n;
       scanf("%ld",&n); //adição de script1
       v[i].den = n;
@@ -66,8 +63,8 @@ int main ()
   for (i= 0; i < tam-1 ; i++)
     {
       for (i= 0; i < tam ; i++)
-      //imprime_r(v[k]); //deve imprimir "NaN"
-      printf("%ld/%ld \|",v[i].num,v[i].den);
+      imprime_r(v[i]); //deve imprimir "NaN"
+      //printf("%ld/%ld \|",v[i].num,v[i].den);
     }
   
   /*
