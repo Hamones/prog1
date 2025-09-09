@@ -153,10 +153,13 @@ void imprime_r (struct racional r)
 	-1 se r1 < r2, 
 	0  se r1 = r2 ou 1 se r1 > r2 */
 int compara_r (struct racional r1, struct racional r2)
-{
+{	
+	struct racional valor;
+	subtrai_r(r1,r2,&valor);
+
 	if (valido_r(r1) == 0 || valido_r(r2))
 		return -2;
-	if (subtrai_r(r1,r2) < 0)
+	if (valor.num < 0)
 		return -1;
 		else
 			return 0;
