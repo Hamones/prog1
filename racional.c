@@ -16,7 +16,7 @@
 /*
  * Implemente aqui as funcoes definidas no racionais.h; caso precise,
  * pode definir aqui funcoes auxiliares adicionais, que devem ser usadas
- * somente neste arquivo.
+ * somente neste arquivo. 
 */
 
 /* retorna um número aleatório entre min e max, inclusive. */
@@ -131,7 +131,7 @@ void imprime_r (struct racional r)
 {	
 	if (valido_r(r) == 0)
 	{ 
-		printf("INVALIDO");		
+		printf("NaN");		
 	}
 	else if (r.num == 0)
 	{
