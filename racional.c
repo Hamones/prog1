@@ -16,7 +16,7 @@
 /*
  * Implemente aqui as funcoes definidas no racionais.h; caso precise,
  * pode definir aqui funcoes auxiliares adicionais, que devem ser usadas
- * somente neste arquivo. 
+ * somente neste arquivo.
 */
 
 /* retorna um número aleatório entre min e max, inclusive. */
@@ -131,27 +131,45 @@ void imprime_r (struct racional r)
 {	
 	if (valido_r(r) == 0)
 	{ 
-		printf("NaN");		
+		printf("INVALIDO ");		
 	}
 	else if (r.num == 0)
 	{
-		printf("0");
+		printf("0 ");
 	}
 	else if (r.den == 1)
 	{
-		printf("%ld",r.num);
+		printf("%ld ",r.num);
 	}
 	else if (r.den == r.num)
 	{
-		printf("1");
+		printf("1 ");
 	}
 	else
-		printf("%ld/%ld",r.num,r.den);
+		printf("%ld/%ld ",r.num,r.den);
 }
-/* Compara dois racionais r1 e r2. Retorno: -2 se r1 ou r2 for inválido,
- * -1 se r1 < r2, 0 se r1 = r2 ou 1 se r1 > r2 */
-int compara_r (struct racional r1, struct racional r2);
+/* Compara dois racionais r1 e r2. Retorno: 
+	-2 se r1 ou r2 for inválido,
+	-1 se r1 < r2, 
+	0  se r1 = r2 ou 1 se r1 > r2 */
+int compara_r (struct racional r1, struct racional r2)
+{
+	if (valido_r(r1) == 0 || valido_r(r2))
+		return -2;
+	if (subtrai_r(r1,r2) < 0)
+		return -1;
+		else
+			return 0;
+	/* exemplo de diminuição:
+	se a é menor b logo a-b <-0 ;
+	se a é manior que b logo a - b > 0;
+	se a é igual a b logo a - b = 0;
+	*/
 
+}
+	
+
+	
 /* Retorna a soma dos racionais r1 e r2 no parametro *r3.
  * Retorna 1 se a operacao foi bem sucedida ou
  *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
