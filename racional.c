@@ -131,7 +131,7 @@ void imprime_r (struct racional r)
 {	
 	if (valido_r(r) == 0)
 	{ 
-		printf("INVALIDO ");		
+		printf("NaN ");		
 	}
 	else if (r.num == 0)
 	{
