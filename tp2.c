@@ -3,7 +3,6 @@
 #include "racional.h"
 
 /* coloque aqui as funções auxiliares que precisar neste arquivo */
-
 /* programa principal */
 int main ()
 {
@@ -11,13 +10,15 @@ int main ()
   /*defina um vetor para até 100 números racionais
   */
   srand(0);
-  int tam,i,j;
+  int tam,i,j,menor;
   long int n;
 
   scanf("%d",&tam);
 
   struct racional v[tam];
   struct racional soma;
+  
+  struct racional aux; //usado para ordenar o vetor.
   /*
   leia um valor n tal que 0 < n < 100
   */
@@ -91,16 +92,47 @@ int main ()
     }
   printf("\n");
    /*
-  Ordenar e impriprimir o vetor*/
-   comparar
-  
+  Ordenar e imprimir o vetor
+  pseudo código
+  comparar o vetor i com o vetor i+1
+    se for menor armazenar
+    encontrar o menor vetor
+    atrocar menor com a variável de início.
+  pular a posição de i;
+  */
+
+  for (i=0; i < tam; i++)
+  {
+    for (j=i+1; j < tam; j++)
+    {
+      if (compara_r(v[j],v[menor]) == -1)
+      {
+        menor = j;
+      }
+    }
+    if (menor != i)
+    {
+      aux = v[i];
+      v[i] = v[menor];
+      v[menor] = aux;
+    }
+  }
+
+    printf("VETOR = ");
+  for (i= 0; i < tam ; i++)
+    {
+      for (i= 0; i < tam ; i++)
+      imprime_r(v[i]); //deve imprimir "NaN"
+      //printf("%ld/%ld \|",v[i].num,v[i].den);
+    }
+  printf("\n");
   /*
   calcule a soma de todos os elemetnos do vetor
   imprima "SOMA =" e a soma calculada acima
   */
-  soma_r(v[i],v[i+1],&soma);
+  //soma_r(v[i],v[i+1],&soma);
   printf("\n");
-  printf("valor da soma: %ld/%ld", soma.num,soma.den);
+  //printf("valor da soma: %ld/%ld", soma.num,soma.den);
   /*
   retorne 0
   */
