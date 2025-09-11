@@ -51,7 +51,7 @@ int main ()
   {
     if (valido_r(v[i]) == 0) 
     {
-      v[i] = v[tam];
+      v[i] = v[tam-1];
       tam--;
       i--;
     }
