@@ -68,7 +68,6 @@ struct racional simplifica_r (struct racional r)
 	local.num = r.num/valor;
 	local.den = r.den/valor;
 
-  printf("teste bloco ok\n");
 	if ( (local.num < 0 && local.den < 0) )
 	{
 		local.num = local.num *-1;
@@ -144,7 +143,7 @@ void imprime_r (struct racional r)
 	}
 	else if (r.num == 0)
 	{
-		printf("NaN ");
+		printf("0 ");
 	}
 	else if (r.den == 1)
 	{
