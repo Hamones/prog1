@@ -19,6 +19,8 @@
  * somente neste arquivo.
 */
 
+
+
 /* retorna um número aleatório entre min e max, inclusive. */
 long aleat (long min, long max)
 {
@@ -55,14 +57,18 @@ long mmc (long a, long b)
  * Se r for inválido, devolve-o sem simplificar. */
 struct racional simplifica_r (struct racional r)
 {
+	if (r.num == 00 && r.den == 0)
+		return r;
 	long valor;
 	struct racional local;
+
 	valor = mdc(r.num,r.den);
 
+	
 	local.num = r.num/valor;
 	local.den = r.den/valor;
 
-  
+  printf("teste bloco ok\n");
 	if ( (local.num < 0 && local.den < 0) )
 	{
 		local.num = local.num *-1;
@@ -73,6 +79,7 @@ struct racional simplifica_r (struct racional r)
 		local.num = local.num *-1;
 		local.den = local.den *-1;
 	}
+	
 	return local;
 }
 
@@ -84,7 +91,9 @@ struct racional cria_r (long numerador, long denominador)
 
     local.num = numerador;
     local.den = denominador;
-	  local= simplifica_r(local);
+
+	local= simplifica_r(local);
+
   	return local;
 }
 
@@ -112,7 +121,7 @@ struct racional sorteia_r (long min, long max)
 	y = aleat (min, max);
    	a = cria_r(x,y);
 
-	a=simplifica_r(a);
+	a = simplifica_r(a);
 
 	return a;
 }
@@ -135,7 +144,7 @@ void imprime_r (struct racional r)
 	}
 	else if (r.num == 0)
 	{
-		printf("0 ");
+		printf("NaN ");
 	}
 	else if (r.den == 1)
 	{
@@ -156,8 +165,8 @@ int compara_r (struct racional r1, struct racional r2)
 {	
 	struct racional valor;
 	subtrai_r(r1,r2,&valor);
-
-	if (valido_r(r1) == 0 || valido_r(r2))
+	valor = simplifica_r(valor);
+	if (valido_r(r1) == 0 || valido_r(r2) == 0)
 		return -2;
 	if (valor.num < 0)
 		return -1;
@@ -168,7 +177,6 @@ int compara_r (struct racional r1, struct racional r2)
 	se a é manior que b logo a - b > 0;
 	se a é igual a b logo a - b = 0;
 	*/
-
 }
 	
 
@@ -177,20 +185,16 @@ int compara_r (struct racional r1, struct racional r2)
  * Retorna 1 se a operacao foi bem sucedida ou
  *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
 int soma_r (struct racional r1, struct racional r2, struct racional *r3)
-//usar &agregado em *r3
 {
-	struct racional local;
-  
-  if (valido_r(r1) == 1|| valido_r (r2) == 1 || r3 == 0)
-  {
-    return 0;
-  }
-  
-	local.num = (r1.num*r2.den) + (r2.num*r1.den);
-	local.den = (r1.den*r2.den);
+	if ( r3 == NULL)
+		return 0;
+	if (valido_r(r1) == 0|| valido_r (r2) == 0)
+		return 0;
 
-	local = simplifica_r(local); //não trabalha com ponteiros.
-  	r3 = &local;
+	r3->num = (r1.num*r2.den) + (r2.num*r1.den);
+	r3->den = (r1.den*r2.den);
+
+	*r3 = simplifica_r(*r3);
 	return 1;
 }
 
@@ -199,20 +203,17 @@ int soma_r (struct racional r1, struct racional r2, struct racional *r3)
  * Retorna 1 se a operacao foi bem sucedida ou
  *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
 int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
-//usar &agregado em *r3
 {
-	struct racional local;
+if ( r3 == NULL)
+	return 0;
   
-  if (valido_r(r1) == 1|| valido_r (r2) == 1 || r3 == 0)
-  {
-    return 0;
-  }
+if (valido_r(r1) == 0|| valido_r (r2) == 0)
+   return 0;
   
-	local.num = (r1.num*r2.den) - (r2.num*r1.den);
-	local.den = (r1.den*r2.den);
+	r3->num = (r1.num*r2.den) - (r2.num*r1.den);
+	r3->den = (r1.den*r2.den);
 
-	local = simplifica_r(local); //não trabalha com ponteiros.
- 	 r3 = &local;
+	*r3 = simplifica_r(*r3);
 	return 1;
 }
 
@@ -221,18 +222,16 @@ int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
  *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
 int multiplica_r (struct racional r1, struct racional r2, struct racional *r3)
 {
-	struct racional local = {0,0};
-
-	if (valido_r(r1) == 0 || valido_r(r2) || r3 == 0)
+	if ( r3 == NULL)
 		return 0;
-	else
-		{		
-		local.num = (r1.num * r1.num);
-		local.den = (r2.den * r2.den);
-		}
+  	if (valido_r(r1) == 0|| valido_r (r2) == 0)
+		return 0;
 
-	local = simplifica_r(local);
-	r3 = &local;
+	r3->num = (r1.num * r1.num);
+	r3->den = (r2.den * r2.den);
+	
+
+	*r3 = simplifica_r(*r3);
   return 1;
 }
 
@@ -241,18 +240,16 @@ int multiplica_r (struct racional r1, struct racional r2, struct racional *r3)
  *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
 int divide_r (struct racional r1, struct racional r2, struct racional *r3)
 {
-	struct racional local = {0,0};
-
-	if (valido_r(r1) == 0 || valido_r(r2) || r3 == 0)
+	if ( r3 == NULL)
 		return 0;
-	else
-		{		
-		local.num = (r1.num * r2.den);
-		local.den = (r1.den * r2.num);
-		}
 
-	local = simplifica_r(local);
-  r3 = &local;
+	if (valido_r(r1) == 0 || valido_r(r2) == 0)
+		return 0;
+	
+	r3->num = (r1.num * r2.den);
+	r3->den = (r1.den * r2.num);
+
+	*r3 = simplifica_r(*r3);
   return 1;
 }
   
