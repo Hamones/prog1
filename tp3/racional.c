@@ -11,6 +11,7 @@
 
 /* coloque aqui seus includes (primeiro os <...>, depois os "...") */
 #include <stdio.h>
+#include <racional.h>
 
 /* aqui vem a struct racional propriamente dita, nao modifique! */
 struct racional {
@@ -28,14 +29,23 @@ struct racional {
 /* calcula o mdc pelo metodo de Euclides */
 long mdc (long a, long b)
 {
-  /* implemente aqui */
+  long resto ;
+  while (b != 0)
+	 {
+		resto = (a % b);
+		a = b;
+		b = resto; 
+	}
+  return a;
 }
 
 /* Minimo Multiplo Comum entre a e b */
 /* mmc = (a * b) / mdc (a, b)        */
 long mmc (long a, long b)
 {
-  /* implemente aqui */
+	long x;
+	x = (a * b) / mdc (a,b);
+	return x;
 }
 
 /* Simplifica o número racional indicado no parâmetro.
@@ -44,8 +54,27 @@ long mmc (long a, long b)
  * Se ambos numerador e denominador forem negativos, o resultado é positivo.
  * Se o denominador for negativo, o sinal deve migrar para o numerador. */
 int simplifica_r (struct racional *r)
+//struct racional simplifica_r (struct racional r)
 {
-  /* implemente aqui */
+	long valor;
+	struct racional local;
+	valor = mdc(r.num,r.den);
+
+	local.num = r.num/valor;
+	local.den = r.den/valor;
+
+
+	if ( (local.num < 0 && local.den < 0) )
+	{
+		local.num = local.num *-1;
+		local.den = local.den *-1;
+	}
+	if (local.num >= 0 && local.den < 0) 
+	{
+		local.num = local.num *-1;
+		local.den = local.den *-1;
+	}
+	return local;
 }
 
 /* implemente as demais funções de racional.h aqui */
@@ -59,15 +88,31 @@ long denominador_r (struct racional r);
  * e retorna um ponteiro que aponta para ele.
  * A memória para o número racional deve ser alocada dinamicamente
  * por esta função. Retorna NULL se não conseguiu alocar a memória. */
-struct racional *cria_r (long numerador, long denominador);
+struct racional *cria_r (long numerador, long denominador)
+//struct racional cria_r (long numerador, long denominador)
+{
+    struct racional local;
+
+    local.num = numerador;
+    local.den = denominador;
+	  local= simplifica_r(local);
+  	return local;
+}
+
 
 /* Libera a memória alocada para o racional apontado por r */
 void destroi_r (struct racional **r);
 
 /* Retorna 1 se o racional r for válido ou 0 se for inválido. Um racional
  * é inválido se o denominador for zero ou se ele não tiver sido alocado. */
-int valido_r (struct racional *r);
-
+int valido_r (struct racional *r)
+{
+//int valido_r (struct racional r)
+  	if (r.den == 0)
+		return 0;
+	else
+		return 1;
+}
 /* Imprime um racional r, respeitando estas regras:
    - o racional deve estar na forma simplificada;
    - não use espacos em branco e não mude de linha;
@@ -79,8 +124,33 @@ int valido_r (struct racional *r);
      - se o numerador e denominador forem iguais, imprime somente "1";
      - se o racional for negativo, o sinal é impresso antes do número;
      - se numerador e denominador forem negativos, o racional é positivo. */
-void imprime_r (struct racional *r);
-
+void imprime_r (struct racional *r)
+//void imprime_r (struct racional r)
+{
+	if (r==NULL)
+  {
+    printf("NULL"); //diferente de tp2.c
+  }
+    
+	if (valido_r(r) == 0)
+	{ 
+		printf("INVALIDO");		
+	}
+	else if (r.num == 0)
+	{
+		printf("0");
+	}
+	else if (r.den == 1)
+	{
+		printf("%ld",r.num);
+	}
+	else if (r.den == r.num)
+	{
+		printf("1");
+	}
+	else
+		printf("%ld/%ld",r.num,r.den);
+}
 /* Compara dois números racionais r1 e r2.
  * Retorna -2 se r1 ou r2 for inválido ou se o respectivo ponteiro for nulo.
  * Retorna -1 se r1 < r2; 0 se r1 = r2; 1 se r1 > r2.
