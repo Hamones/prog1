@@ -27,13 +27,14 @@ int main ()
 
   scanf("%d",&tam);
 
-  struct racional v[tam];
+  struct racional *vetor;
   struct racional soma;
   
   struct racional aux; //usado para ordenar o vetor.
 
   for (i= 0; i < tam ; i++)
-      v[i]= cria_r(0,0);
+      v[i]= numerador;
+      v[i]= denominador;
 
   for (i= 0; i < tam ; i++)
     { 
