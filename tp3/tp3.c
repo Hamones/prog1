@@ -8,97 +8,108 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "racional.h"
+
 /* coloque aqui as funções auxiliares que precisar neste arquivo */
+struct racional simplifica_r (struct racional r);
+long mmc (long a, long b);
+long aleat (long min, long max);
+long mdc (long a, long b);
 
 /* programa principal */
 int main ()
 {
-  int i =1;
-  long max,n;
-  struct racional r1, sm, sub, mult, div;
-  struct racional r2;
-  struct racional r3;
+  /* a completar! */
+  /*defina um vetor para até 100 números racionais
+  */
   srand(0);
+  int tam,i,j,menor;
+  long int n,d;
 
-  /*    struct racional r1 = {0,0}
-  struct racional r2 = {10,10}*/
+  scanf("%d",&tam);
 
-  scanf("%ld",&n);
+  struct racional v[tam];
+  struct racional soma;
+  
+  struct racional aux; //usado para ordenar o vetor.
 
-  if ((n < 0) || (n  > 100))
-  return 1;
+  for (i= 0; i < tam ; i++)
+      v[i]= cria_r(0,0);
 
-  scanf("%ld",&max);
+  for (i= 0; i < tam ; i++)
+    { 
+      scanf("%ld",&n);
 
-  if ((max < 0) || (max > 30))
-  return 1;
-  while ( i <= n )
-  {  
-    printf("%d: ",i);
+      scanf("%ld",&d);
 
-    
-    r1 = sorteia_r(-max, max);
-    
-    r2 = sorteia_r(-max, max);
-
-    imprime_r(r1);
-    printf(" ");
-    imprime_r(r2);
-    printf(" ");
-    if (valido_r(r1) == 0|| valido_r(r2) == 0)
-    {
-        printf("NUMERO INVALIDO\n");
-        return 1;
+      v[i]= cria_r(n,d);
     }
+  
 
-    sm   = soma_r(r1,r2,&p3);
-    sub  = subtrai_r(r1,r2,&p3);
-    mult = multiplica_r(r1,r2,&p3);
-    div  = divide_r(r1,r2);
-
-    if (valido_r(div) == 0)
+  printf("VETOR = ");
+  for (i= 0; i < tam ; i++)
     {
-        printf("DIVISAO INVALIDA\n");
-        return 1;
+      for (i= 0; i < tam ; i++)
+      imprime_r(v[i]); //deve imprimir "NaN"
+      //printf("%ld/%ld \|",v[i].num,v[i].den);
     }
+  printf("\n");
 
-    
-    //printf("%ld/%ld apenas printf   -   ",r1.num,r1.den);
-    /*
-    1 - Imprimir os valores
-    2 - Imprimir o valor simplificado
-    3 - Imprimir op valor não valido
-
-    
-    */
-
-    /* 
-    Imprimri soma/subtração;
-
-    */
-    imprime_r(sm);
-    printf(" ");
-    
-    imprime_r(sub);
-    printf(" ");
-    /*
-    Imprimir multiplicação
-    */
-
-
-    imprime_r(mult);
-    printf(" ");        
-    
-    /*
-    Imprimir divisão;
-    */
-    
-    imprime_r(div);
-    
-    printf("\n");        
-    i++;
-
+  for (i = 0; i < tam; i++) 
+  {
+    if (valido_r(v[i]) == 0) 
+    {
+      v[i] = v[tam-1];
+      tam--;
+      i--;
+    }
   }
+
+  printf("VETOR = ");
+  for (i= 0; i < tam ; i++)
+    {
+      for (i= 0; i < tam ; i++)
+      imprime_r(v[i]); //deve imprimir "NaN"
+      //printf("%ld/%ld \|",v[i].num,v[i].den);
+    }
+  printf("\n");
+
+  for (i = 0; i < tam; i++)
+  {
+    menor = i;
+    {
+      for (j = i; j < tam; j++)
+        if (compara_r(v[j], v[menor]) == -1)
+        {
+          menor = j;
+        }
+    }
+      if (i != j)
+      {
+      aux = v[i];
+      v[i] = v[menor];
+      v[menor] = aux;
+    }
+  }
+  printf("VETOR = ");
+  for (i= 0; i < tam ; i++)
+    {
+      for (i= 0; i < tam ; i++)
+      imprime_r(v[i]); //deve imprimir "NaN"
+      //printf("%ld/%ld \|",v[i].num,v[i].den);
+    }
+  printf("\n");
+  printf("SOMA = ");
+  soma = v[0];
+  for (i= 1; i < tam; i++){
+    soma_r(v[i], soma, &soma);
+  }
+  if (valido_r(soma))
+  {
+    imprime_r(soma);
+  }
+  else
+  printf ("0");
+  
+  printf("\n");
   return (0) ;
 }
-
