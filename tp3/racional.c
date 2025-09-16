@@ -102,7 +102,12 @@ long denominador_r (struct racional r)//devo usar essa função em criar?
 struct racional *cria_r (long numerador, long denominador)
 //struct racional cria_r (long numerador, long denominador)
 {
-  	
+  	vetor = malloc (tam*sizeof(int));
+	if (!vetor)
+	{
+		printf("NULL");
+		exit(1);
+	}
 	//usar a função numerador
     local.num = numerador; 
 	//usar a funçõa denomindor
@@ -111,7 +116,7 @@ struct racional *cria_r (long numerador, long denominador)
 	
 	local= simplifica_r(local); //como simplificar esse vetor?
 
-  	return local;
+  	return vetor;
 }
 
 
