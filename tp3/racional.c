@@ -56,13 +56,16 @@ long mmc (long a, long b)
 int simplifica_r (struct racional *r)
 //struct racional simplifica_r (struct racional r)
 {
+	if (r.num == 00 && r.den == 0)
+		return r;
 	long valor;
 	struct racional local;
+
 	valor = mdc(r.num,r.den);
 
+	
 	local.num = r.num/valor;
 	local.den = r.den/valor;
-
 
 	if ( (local.num < 0 && local.den < 0) )
 	{
@@ -74,6 +77,7 @@ int simplifica_r (struct racional *r)
 		local.num = local.num *-1;
 		local.den = local.den *-1;
 	}
+	
 	return local;
 }
 
