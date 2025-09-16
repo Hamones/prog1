@@ -1,1 +1,18 @@
 Esse código será escrito em partes, por isso pode ter problemas com formatação e a clareza do arquivo.
+
+Quero alocar um vetor de ponteiros.
+
+para que isso aconteça como eu faço?
+
+
+
+quero que contenha  1 2 3 4 5 6 7 8 9 10 como variáveis a esse ponteiro.
+Atribuição indireta de vetor:
+int *nvetor;
+int **pvetor;
+pvetor=&nvetor;
+nvetor = malloc(sizeof(int)*tam);
+for (i = 0 ; i < n < tam{
+	valor++;
+	nvetor=&valor;
+}
