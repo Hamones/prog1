@@ -34,13 +34,6 @@ int main ()
   return 1;
   while ( i <= n )
   {  
-    /*
-      criar um vetor de structs
-      for (i = 1; i<n ; i++)
-      {
-        vet[i] = sorteia_r(-max, max);
-      }
-    */
     printf("%d: ",i);
 
     
