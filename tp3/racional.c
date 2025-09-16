@@ -95,7 +95,7 @@ struct racional *cria_r (long numerador, long denominador)
 
     local.num = numerador;
     local.den = denominador;
-	  local= simplifica_r(local);
+	local= simplifica_r(local);
   	return local;
 }
 
