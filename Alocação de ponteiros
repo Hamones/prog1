@@ -16,3 +16,12 @@ for (i = 0 ; i < n < tam{
 	valor++;
 	nvetor=&valor;
 }
+acredito que esse código referencia a mesma variável várias vezes.
+Para realizar essa tarefa corretamente é necessário usar aritmética de ponteiros.
+
+pergunta:
+como movimentar o vetor?
+como referênciar vários dados a um vetor?
+por atribuiçaõ direta...
+
+como resgatar a posição inicial de um vetor?
