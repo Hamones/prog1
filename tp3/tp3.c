@@ -14,7 +14,15 @@ struct racional simplifica_r (struct racional r);
 long mmc (long a, long b);
 long aleat (long min, long max);
 long mdc (long a, long b);
+/*Alocao de variaveis*/
+  
+int tam,i,j,menor;
+  long int n,d;
 
+  struct racional *vetor;
+  struct racional soma;
+  
+  struct racional aux; //usado para ordenar o vetor.
 /* programa principal */
 int main ()
 {
@@ -22,24 +30,14 @@ int main ()
   /*defina um vetor para até 100 números racionais
   */
   srand(0);
-  int tam,i,j,menor;
-  long int n,d;
 
   scanf("%d",&tam);
 
-  struct racional *vetor;
-  struct racional soma;
-  
-  struct racional aux; //usado para ordenar o vetor.
 
-  for (i= 0; i < tam ; i++)
-      v[i]= numerador;
-      v[i]= denominador;
 
   for (i= 0; i < tam ; i++)
     { 
-      scanf("%ld",&n);
-
+      scanf("%ld",&n); 
       scanf("%ld",&d);
 
       v[i]= cria_r(n,d);
@@ -64,7 +62,7 @@ int main ()
       i--;
     }
   }
-
+/*
   printf("VETOR = ");
   for (i= 0; i < tam ; i++)
     {
@@ -112,5 +110,6 @@ int main ()
   printf ("0");
   
   printf("\n");
+  */
   return (0) ;
 }
