@@ -83,10 +83,17 @@ int simplifica_r (struct racional *r)
 
 /* implemente as demais funções de racional.h aqui */
 * Retorna o numerador do racional r */
-long numerador_r (struct racional r);
+long numerador_r (struct racional r)//devo usar essa função em criar?
+{
+	return *vetor.num;
+}
 
 /* Retorna o denominador do racional r */
-long denominador_r (struct racional r);
+long denominador_r (struct racional r)//devo usar essa função em criar?
+{
+	return *vetor.den;
+}
+
 
 /* Cria um número racional com o numerador e denominador indicados
  * e retorna um ponteiro que aponta para ele.
@@ -95,12 +102,14 @@ long denominador_r (struct racional r);
 struct racional *cria_r (long numerador, long denominador)
 //struct racional cria_r (long numerador, long denominador)
 {
-  	struct racional local;
-
-    local.num = numerador;
+  	
+	//usar a função numerador
+    local.num = numerador; 
+	//usar a funçõa denomindor
     local.den = denominador;
 
-	local= simplifica_r(local);
+	
+	local= simplifica_r(local); //como simplificar esse vetor?
 
   	return local;
 }
