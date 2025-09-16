@@ -95,11 +95,13 @@ long denominador_r (struct racional r);
 struct racional *cria_r (long numerador, long denominador)
 //struct racional cria_r (long numerador, long denominador)
 {
-    struct racional local;
+  	struct racional local;
 
     local.num = numerador;
     local.den = denominador;
+
 	local= simplifica_r(local);
+
   	return local;
 }
 
@@ -131,14 +133,9 @@ int valido_r (struct racional *r)
 void imprime_r (struct racional *r)
 //void imprime_r (struct racional r)
 {
-	if (r==NULL)
-  {
-    printf("NULL"); //diferente de tp2.c
-  }
-    
 	if (valido_r(r) == 0)
 	{ 
-		printf("INVALIDO");		
+		printf("NaN");		
 	}
 	else if (r.num == 0)
 	{
@@ -153,7 +150,7 @@ void imprime_r (struct racional *r)
 		printf("1");
 	}
 	else
-		printf("%ld/%ld",r.num,r.den);
+		printf("%ld/%ld ",r.num,r.den);
 }
 /* Compara dois números racionais r1 e r2.
  * Retorna -2 se r1 ou r2 for inválido ou se o respectivo ponteiro for nulo.
@@ -161,21 +158,109 @@ void imprime_r (struct racional *r)
  * Atenção: faça a comparação normalizando os denominadores pelo MMC.
  * Fazer a comparação baseado na divisão do numerador pelo denominador
  * pode gerar erro de arredondamento e falsear o resultado. */
-int compara_r (struct racional *r1, struct racional *r2);
-
+int compara_r (struct racional *r1, struct racional *r2)
+/* Compara dois racionais r1 e r2. Retorno: 
+	-2 se r1 ou r2 for inválido,
+	-1 se r1 < r2, 
+	0  se r1 = r2 ou 1 se r1 > r2 */
+int compara_r (struct racional r1, struct racional r2)//
+{	
+	struct racional valor;
+	subtrai_r(r1,r2,&valor);
+	valor = simplifica_r(valor);
+	if (valido_r(r1) == 0 || valido_r(r2) == 0)
+		return -2;
+	if (valor.num < 0)
+		return -1;
+		else
+			return 0;
+	/* exemplo de diminuição:
+	se a é menor b logo a-b <-0 ;
+	se a é manior que b logo a - b > 0;
+	se a é igual a b logo a - b = 0;
+	*/
+}
 /* Coloca em *r3 a soma simplificada dos racionais *r1 e *r2.
  * Retorna 1 em sucesso e 0 se r1 ou r2 for inválido ou um ponteiro for nulo. */
-int soma_r (struct racional *r1, struct racional *r2, struct racional *r3);
+int soma_r (struct racional *r1, struct racional *r2, struct racional *r3)
+/* Retorna a soma dos racionais r1 e r2 no parametro *r3.
+ * Retorna 1 se a operacao foi bem sucedida ou
+ *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
+//int soma_r (struct racional r1, struct racional r2, struct racional *r3)
+{
+	if ( r3 == NULL)
+		return 0;
+	if (valido_r(r1) == 0|| valido_r (r2) == 0)
+		return 0;
+
+	r3->num = (r1.num*r2.den) + (r2.num*r1.den);
+	r3->den = (r1.den*r2.den);
+
+	*r3 = simplifica_r(*r3);
+	return 1;
+}
+
 
 /* Coloca em *r3 a diferença simplificada dos racionais *r1 e *r2.
  * Retorna 1 em sucesso e 0 se r1 ou r2 for inválido ou um ponteiro for nulo. */
-int subtrai_r (struct racional *r1, struct racional *r2, struct racional *r3);
+int subtrai_r (struct racional *r1, struct racional *r2, struct racional *r3)
+/* Retorna a subtracao dos racionais r1 e r2 no parametro *r3.
+ * Retorna 1 se a operacao foi bem sucedida ou
+ *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
+//int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
+{
+if ( r3 == NULL)
+	return 0;
+  
+if (valido_r(r1) == 0|| valido_r (r2) == 0)
+   return 0;
+  
+	r3->num = (r1.num*r2.den) - (r2.num*r1.den);
+	r3->den = (r1.den*r2.den);
+
+	*r3 = simplifica_r(*r3);
+	return 1;
+}
 
 /* Coloca em *r3 o produto simplificado dos racionais *r1 e *r2.
  * Retorna 1 em sucesso e 0 se r1 ou r2 for inválido ou um ponteiro for nulo. */
-int multiplica_r (struct racional *r1, struct racional *r2, struct racional *r3);
+int multiplica_r (struct racional *r1, struct racional *r2, struct racional *r3)
+/* Retorna a multiplicacao dos racionais r1 e r2 no parametro *r3.
+ * Retorna 1 se a operacao foi bem sucedida ou
+ *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
+//int multiplica_r (struct racional r1, struct racional r2, struct racional *r3)
+{
+	if ( r3 == NULL)
+		return 0;
+  	if (valido_r(r1) == 0|| valido_r (r2) == 0)
+		return 0;
+
+	r3->num = (r1.num * r1.num);
+	r3->den = (r2.den * r2.den);
+	
+
+	*r3 = simplifica_r(*r3);
+  return 1;
+}
 
 /* Coloca em *r3 a divisão simplificada do racional *r1 por *r2.
  * Retorna 1 em sucesso e 0 se r1 ou r2 for inválido ou um ponteiro for nulo. */
-int divide_r (struct racional *r1, struct racional *r2, struct racional *r3);
+int divide_r (struct racional *r1, struct racional *r2, struct racional *r3)
+/* Retorna a divisao dos racionais r1 e r2 no parametro *r3.
+ * Retorna 1 se a operacao foi bem sucedida ou
+ *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
+//int divide_r (struct racional r1, struct racional r2, struct racional *r3)
+{
+	if ( r3 == NULL)
+		return 0;
+
+	if (valido_r(r1) == 0 || valido_r(r2) == 0)
+		return 0;
+	
+	r3->num = (r1.num * r2.den);
+	r3->den = (r1.den * r2.num);
+
+	*r3 = simplifica_r(*r3);
+  return 1;
+}
 
