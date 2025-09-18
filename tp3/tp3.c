@@ -34,15 +34,22 @@ int main ()
   scanf("%d",&tam);
 
 
+	//início formatando o vetor apartir da indexação de ponteiros
+	vetor = malloc(sizeof(int)*tam);
+	inicio = &vetor; // usado para remover os vetores iniciais;  
+	
+	//loop destinado para a adição de valores a todos os vetores.
+	for ( i = 0 ; i < tam; i++)
+	{
+		vetor = cria(0,0);
+		vetor++;  
+	}
 
-  for (i= 0; i < tam ; i++)
-    { 
-      scanf("%ld",&n); 
-      scanf("%ld",&d);
-
-      v[i]= cria_r(n,d);
-    }
+	//fim da tentativa da criação dos vetores por ponteiros.
   
+
+	//tentativa de adicionar dados nos vetores apartir da leitura de varíáveis.
+	numeador
 
   printf("VETOR = ");
   for (i= 0; i < tam ; i++)
