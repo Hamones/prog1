@@ -21,8 +21,8 @@ long mdc (long a, long b);
 int tam,i,j,menor;
 long int n,d;
 
-long int *vetor;
-struct racional *dados;
+struct racional **vetor;
+struct racional *ponteiro;
 //struct racional soma; //tp2
 //struct racional aux; //tp2: usado para ordenar o vetor.
 
@@ -35,26 +35,34 @@ int main ()
   
   scanf("%d",&tam);
 
-  vetor = malloc (tam*sizeof(int));
+  vetor = malloc (sizeof(struct racional *)*tam); //entender a diferença entre struct racional* p
+
+
   if (!vetor)
   {
     printf ("erro ao alocar o vetor \n");
     return (1); // testar qual a diferença entre exit
   }
-
-  for (int i = 0; i < tam; i++)
-    vetor[i].num = i; // confirmar qual valor estou preenchendo esse vetor.
   
-    for (int i = 0; i < tam; i++)
-    printf("%ld/%ld", vetor[i].num, vetor[i].den);
+  for (i = 0; i < tam; i++)
+  { 
+    *vetor = cria_r(1,2); 
+    vetor++;
+  }
+  vetor = vetor - tam;
+
+  for (i = 0; i < tam; i++)
+  {
+    imprime_r(*vetor);
+    vetor++;
+  }
   printf("/n");
 
 
 
 
 
-
-  printf("VETOR = ");
+/*printf("VETOR = ");
   for (i= 0; i < tam ; i++)
     {
       for (i= 0; i < tam ; i++)
@@ -71,7 +79,8 @@ int main ()
       tam--;
       i--;
     }
-  }
+  }*/
+  
 /*
   printf("VETOR = ");
   for (i= 0; i < tam ; i++)
