@@ -10,46 +10,49 @@
 #include "racional.h"
 
 /* coloque aqui as funções auxiliares que precisar neste arquivo */
+
 struct racional simplifica_r (struct racional r);
 long mmc (long a, long b);
 long aleat (long min, long max);
 long mdc (long a, long b);
+
 /*Alocao de variaveis*/
   
 int tam,i,j,menor;
-  long int n,d;
+long int n,d;
 
-  struct racional *vetor;
-  struct racional soma;
-  
-  struct racional aux; //usado para ordenar o vetor.
+long int *vetor;
+struct racional *dados;
+//struct racional soma; //tp2
+//struct racional aux; //tp2: usado para ordenar o vetor.
+
 /* programa principal */
 int main ()
 {
   /* a completar! */
   /*defina um vetor para até 100 números racionais
   */
-  srand(0);
-
+  
   scanf("%d",&tam);
 
+  vetor = malloc (tam*sizeof(int));
+  if (!vetor)
+  {
+    printf ("erro ao alocar o vetor \n");
+    return (1); // testar qual a diferença entre exit
+  }
 
-	//início formatando o vetor apartir da indexação de ponteiros
-	vetor = malloc(sizeof(int)*tam);
-	inicio = &vetor; // usado para remover os vetores iniciais;  
-	
-	//loop destinado para a adição de valores a todos os vetores.
-	for ( i = 0 ; i < tam; i++)
-	{
-		vetor = cria(0,0);
-		vetor++;  
-	}
-
-	//fim da tentativa da criação dos vetores por ponteiros.
+  for (int i = 0; i < tam; i++)
+    vetor[i].num = i; // confirmar qual valor estou preenchendo esse vetor.
   
+    for (int i = 0; i < tam; i++)
+    printf("%ld/%ld", vetor[i].num, vetor[i].den);
+  printf("/n");
 
-	//tentativa de adicionar dados nos vetores apartir da leitura de varíáveis.
-	numeador
+
+
+
+
 
   printf("VETOR = ");
   for (i= 0; i < tam ; i++)
@@ -80,7 +83,7 @@ int main ()
   printf("\n");
 
   for (i = 0; i < tam; i++)
-  {
+  {A memória para o número racional deve ser alocada dinamicamente
     menor = i;
     {
       for (j = i; j < tam; j++)
@@ -100,7 +103,7 @@ int main ()
   for (i= 0; i < tam ; i++)
     {
       for (i= 0; i < tam ; i++)
-      imprime_r(v[i]); //deve imprimir "NaN"
+      imprime_r(v[i]); //deve iA memória para o número racional deve ser alocada dinamicamentemprimir "NaN"
       //printf("%ld/%ld \|",v[i].num,v[i].den);
     }
   printf("\n");
@@ -118,5 +121,6 @@ int main ()
   
   printf("\n");
   */
+  free(vetor);
   return (0) ;
 }
