@@ -41,19 +41,19 @@ int main ()
   if (!vetor)
   {
     printf ("erro ao alocar o vetor \n");
-    return (1); // testar qual a diferença entre exit
+    exit (1); // testar qual a diferença entre exit
   }
   
   for (i = 0; i < tam; i++)
   { 
-    *vetor = cria_r(1,2); 
+    *vetor = cria_r(1,2); //por que não podemos usar o vetor =?
     vetor++;
   }
   vetor = vetor - tam;
 
   for (i = 0; i < tam; i++)
   {
-    imprime_r(*vetor);
+    imprime_r(*vetor); // estamos atribuindo o valor para o vetor.
     vetor++;
   }
   printf("/n");
@@ -111,7 +111,7 @@ int main ()
   printf("VETOR = ");
   for (i= 0; i < tam ; i++)
     {
-      for (i= 0; i < tam ; i++)
+      for (i= 0; i < tam ; i++)b.num,ra
       imprime_r(v[i]); //deve iA memória para o número racional deve ser alocada dinamicamentemprimir "NaN"
       //printf("%ld/%ld \|",v[i].num,v[i].den);
     }
@@ -130,6 +130,6 @@ int main ()
   
   printf("\n");
   */
-  free(vetor);
+  
   return (0) ;
 }
