@@ -47,9 +47,9 @@ int main ()
   for (i = 0; i < tam; i++)
   { 
 		scanf("%ld/%ld", &a,&b);
-		if (a < 0 || b < 0 || a > 100 || b> 100)
-			exit return(1);
-    *vetor = cria_r(1,2); //por que não podemos usar o vetor =?
+		if ((a < 0 || a > 100) || (b < 0 || b > 100))
+			exit 1;
+    *vetor = cria_r(a,b); //por que não podemos usar o vetor =?
     vetor++;
   }
   vetor = vetor - tam;
@@ -60,8 +60,6 @@ int main ()
     vetor++;
   }
   printf("/n");
-
-
 
 
 
