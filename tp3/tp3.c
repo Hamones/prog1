@@ -46,10 +46,8 @@ int main ()
   
   for (i = 0; i < tam; i++)
   { 
-		scanf("%ld/%ld", &a,&b);
-		if ((a < 0 || a > 100) || (b < 0 || b > 100))
-			exit (1);
-    *vetor = cria_r(a,b); //por que não podemos usar o vetor =?
+
+    *vetor = cria_r(0,0); //por que não podemos usar o vetor =?
     vetor++;
   }
   vetor = vetor - tam;
@@ -71,7 +69,9 @@ int main ()
       //printf("%ld/%ld \|",v[i].num,v[i].den);
     }
   printf("\n");
-
+		scanf("%ld/%ld", &a,&b);
+		if ((a < 0 || a > 100) || (b < 0 || b > 100))
+			exit (1);
   for (i = 0; i < tam; i++) 
   {
     if (valido_r(v[i]) == 0) 
