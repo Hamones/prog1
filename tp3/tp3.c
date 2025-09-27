@@ -19,7 +19,7 @@ long mdc (long a, long b);
 /*Alocao de variaveis*/
   
 int tam,i,j,menor;
-long int n,d;
+long int n,d,a,b;
 
 struct racional **vetor;
 struct racional *ponteiro;
@@ -48,7 +48,7 @@ int main ()
   { 
 		scanf("%ld/%ld", &a,&b);
 		if ((a < 0 || a > 100) || (b < 0 || b > 100))
-			exit 1;
+			exit (1);
     *vetor = cria_r(a,b); //por que não podemos usar o vetor =?
     vetor++;
   }
