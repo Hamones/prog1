@@ -79,7 +79,15 @@ void destroi_r (struct racional **r);
 
 /* Retorna 1 se o racional r for válido ou 0 se for inválido. Um racional
  * é inválido se o denominador for zero ou se ele não tiver sido alocado. */
-int valido_r (struct racional *r);
+int valido_r (struct racional *r)
+{
+	struct racional a;
+	a = *r;
+  	if (a.den == 0) // como verificar o conteúdo de r.den em um ponteiro para ponteiro?
+		return 0;
+	else
+		return 1;
+}
 
 /* Imprime um racional r, respeitando estas regras:
    - o racional deve estar na forma simplificada;
@@ -124,4 +132,3 @@ int multiplica_r (struct racional *r1, struct racional *r2, struct racional *r3)
 /* Coloca em *r3 a divisão simplificada do racional *r1 por *r2.
  * Retorna 1 em sucesso e 0 se r1 ou r2 for inválido ou um ponteiro for nulo. */
 int divide_r (struct racional *r1, struct racional *r2, struct racional *r3);
-

@@ -75,4 +75,3 @@ int multiplica_r (struct racional *r1, struct racional *r2, struct racional *r3)
 int divide_r (struct racional *r1, struct racional *r2, struct racional *r3);
 
 #endif
-

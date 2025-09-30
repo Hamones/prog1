@@ -57,7 +57,38 @@ int main ()
     imprime_r(*vetor); // estamos atribuindo o valor para o vetor.
     vetor++;
   }
-  printf("/n");
+  vetor = vetor - tam;
+  printf("\n");
+
+    for (i = 0; i < tam; i++)
+  { 
+    scanf("%ld",&a);
+    scanf("%ld",&b);
+    *vetor = cria_r(a,b); //por que não podemos usar o vetor =?
+    vetor++;
+  }
+  vetor = vetor - tam;
+
+  for (i = 0; i < tam; i++)
+  {
+    imprime_r(*vetor); // estamos atribuindo o valor para o vetor.
+    vetor++;
+  }
+  vetor = vetor - tam;
+  printf("\n");
+
+// teste da função valido_r():
+
+if (valido_r(*vetor) = 0)//caso base
+{
+  
+  vetor = vetor + (tam - i); // acessar o enderço do último vetor.
+  endereço=vetor;
+  free(vetor);//liberar o espaço de memoria
+  vetor = vetor - (tam -i);// retornar ao vetor antigo
+  vetor = &endereço;
+} 
+
 
 
 
