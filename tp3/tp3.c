@@ -185,14 +185,7 @@ for (i = 0; i < tam; i++)
   
   printf("\n");
   */
-  
-  return (0) ;
-}
-  aux->num = r1->num;
-  aux->den = r1->den;
-  r2 = *r1;
-  r1 = *aux;
-}
+
 
 struct racional simplifica_r (struct racional r);
 long mmc (long a, long b);
