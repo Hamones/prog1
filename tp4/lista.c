@@ -1,4 +1,7 @@
 #include "lista.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 /* coloque demais includes aqui */
 
 /* ------------------- Nao altere estas structs ------------------------- */
@@ -16,7 +19,8 @@ struct lista {
 /* ---------------------------------------------------------------------- */
 
 struct lista *lista_cria (){
-    struct fila *nova_lista malloc (sizeof(struct lista));
+
+    struct lista *nova_lista = malloc (sizeof(struct lista));
 
     if (!nova_lista)
         return 0;
@@ -24,23 +28,26 @@ struct lista *lista_cria (){
     memset (nova_lista, 0, sizeof(struct lista));
 
     return nova_lista;
-
-    
+  
 }
 
-void lista_destroi (struct lista **lista){ //o formato inicial preve *lista
+void lista_destroi (struct lista **lista){ /*o formato inicial preve *lista*/
     if (!*lista)
-        return -1;
+        return;
     
     struct nodo * aux;
-    for (int i = 0; i < *lista -> *tamanho; i++){
-        aux = lista->inicio;
-        lista->inicio = aux->prox;
-        free (aux);
+
+    int i = 0; 
+    while (i < (*lista)->tamanho) { /* 2. Condição*/
+        struct nodo *aux = (*lista)->ini;
+        (*lista)->ini = aux->prox;
+        free(aux);
+
+        i++; /* 3. Incremento*/
     }
 
     free (lista);
-    return 0;
+    return;
 
 }
 
