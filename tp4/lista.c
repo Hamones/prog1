@@ -34,8 +34,6 @@ struct lista *lista_cria (){
 void lista_destroi (struct lista **lista){ /*o formato inicial preve *lista*/
     if (!*lista)
         return;
-    
-    struct nodo * aux;
 
     int i = 0; 
     while (i < (*lista)->tamanho) { /* 2. Condição*/
@@ -55,7 +53,7 @@ int lista_insere_inicio (struct lista *lista, int chave){
     if (!lista)
         return -1;
 
-    if (lista->tamanho == CAP)
+    if (lista->tamanho == chave)
         return -2;
 
     struct nodo *novo_nodo = malloc (sizeof(struct nodo));
@@ -64,13 +62,15 @@ int lista_insere_inicio (struct lista *lista, int chave){
         return -3;
 
     memset (novo_nodo, 0, sizeof(struct nodo));
+
+    return 1;
 }
 
 int lista_insere_fim (struct lista *lista, int chave){
-        if (!lista)
+    if (!lista)
         return -1;
 
-    if (lista->tamanho == CAP)
+    if (lista->tamanho == chave)
         return -2;
 
     struct nodo *novo_nodo = malloc (sizeof(struct nodo));
@@ -79,70 +79,74 @@ int lista_insere_fim (struct lista *lista, int chave){
         return -3;
 
     memset (novo_nodo, 0, sizeof(struct nodo));
+
+    return 1;
 }
 
-int lista_insere_ordenado (struct lista *lista, int chave){
-}
+/*
+ * Insere chave em ordem na lista. Retorna 1
+ * em caso de sucesso e 0 em caso de falha.
+*/
+/*int lista_insere_ordenado (struct lista *lista, int chave){
+    
+}*/
 
 int lista_remove_inicio (struct lista *lista, int *chave){
-    if (! lista || !dado)
+    if (!lista || !chave)
         return -1;
 
-    if (!lista -> tamanho)
+    if (!lista -> tamanho == 0)
         return -2;
 
-    struct nodo *aux = lista->inicio;
-    *dado = aux->valor;
-    lista->inicio = aux->prox;
+    struct nodo *aux = lista->ini;
+    *chave = aux->chave;
+    lista->ini = aux->prox;
 
     lista->tamanho--;
-
-    if (!lista-tamanho)
-        lista-fim = 0;
+    /*   
+     if (!lista->tamanho == 0) <-- avaliar codigo.
+        lista->fim = NULL;
+    */
 
     free (aux);
     return 0;
 }
 
 int lista_remove_fim (struct lista *lista, int *chave){
-    if (! lista || !dado)
+    if (! lista || !chave)
         return -1;
 
     if (!lista -> tamanho)
         return -2;
 
-    struct nodo *aux = lista->inicio;
-    *dado = aux->valor;
-    lista->inicio = aux->prox;
+    struct nodo *aux = lista->ini;
+    *chave = aux->chave;
+    lista->ini = aux->prox;
 
     lista->tamanho--;
 
-    if (!lista-tamanho)
+    /*if (!lista-tamanho) <-- avaliar codigo.
         lista-fim = 0;
-
+    */
     free (aux);
     return 0;    
 }
 
-int lista_remove_ordenado (struct lista *lista, int chave){
-}
+int lista_remove_ordenado (struct lista *lista, int chave);
 
-int lista_vazia (struct lista *lista){
-    lista-<
-}
+int lista_vazia (struct lista *lista);
 
 int lista_tamanho (struct lista *lista){
     if (!lista)
+    {
         return -1;
-
-        return lista->tamanho;
+    }
+    return lista->tamanho;
 }
 
-int lista_pertence (struct lista *lista, int chave){
-}
+int lista_pertence (struct lista *lista, int chave);
 
-void lista_inicia_iterador (struct lista *lista){
-}
+void lista_inicia_iterador (struct lista *lista);
 /*
  * As funcoes abaixo implementam um iterador que vao permitir o usuario
  * de uma lista percorre-la, sem conhecer sua estrutura.
@@ -169,5 +173,4 @@ void lista_inicia_iterador (struct lista *lista);
  * A funcao retorna 0 caso o iterador ultrapasse o ultimo elemento, ou retorna
  * 1 caso o iterador aponte para um elemento valido (dentro da lista).
 */
-int lista_incrementa_iterador (struct lista *lista, int *chave){
-}
+int lista_incrementa_iterador (struct lista *lista, int *chave);
