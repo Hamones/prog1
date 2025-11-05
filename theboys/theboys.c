@@ -17,13 +17,14 @@ iniciar evento com maior prioridade.
 gerar novos eventos na fila de prioridade.
 executar alterações no mundo.
 
-
-inicciar eventos pequenos.
+iniciar eventos pequenos.
+- deslocamento do herói.
 iniciar eventos grandes.
+- tempo de permanência do herói
+--se agente sair = atualzar conjunto
 iniciar missões.
-
-
-grau de descisão de cada agente frente a cada local 
+- concluir a missão: verificar todos os conjuntos das bases.
+- decidir qual herói tomará a poção.
 
 
 
