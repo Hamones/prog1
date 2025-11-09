@@ -13,6 +13,24 @@ int main ()
 	/* testes iniciais.*/
 item com maior prioridade();
 
+Mundo - tamanho do mundo. Base e Altura.
+-Herói
+--posição(variável) == posiçao inicial (Rand(min max) //(x,y) que seria a posição aleatória. /* evitar e de criar o personagem dentro de uma base*/ caso for um local de base fazer o calculo novamente. 
+--habilidades == {h1,h2,h2,h4,h5,h6} //vetor simples.
+--experiência == aumenta quando a missão acontece. //poderíamos aumentar quando ele se desloca, mas ele também pode ser expulso da base.
+/*::iniciado automáticamente.::*/
+--deslocamento == tempo para a missão mais próxima.
+---verificar todas as bases -> escolher a mais próxima. 
+----não retornar para base que foi expulso.
+---criar a função tempo
+--Morrer == v[H1] = NULL;
+
+-Bas
+--posição (fixa) == posição inicial (Rand(min Max)) // (x,y) que seria a posição aleatória. /*evitar que uma missão fique dentro.
+--lista de heróis (o tamanho varia?) == 
+--lista de espera (fixo) == 
+--porteiro ==  
+
 iniciar evento com maior prioridade.
 gerar novos eventos na fila de prioridade.
 executar alterações no mundo.
