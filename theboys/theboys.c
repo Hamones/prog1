@@ -16,19 +16,32 @@ int main ()
 	caracteŕisticas do mundo
 	
 /* Implementações Iniciasi.*/
-item com maior prioridade();
+
+
+int **mundo;
+int *heroi;
+int *missao;
+int *base;
 
 Mundo - tamanho do mundo. Base e Altura.
+mundo()
+
 -Herói
 --criar vetor herois [];
+heroi = cria_heroi();
+heroi.posição = ;
 --posição(variável) == posiçao inicial (Rand(min max) //(x,y) que seria a posição aleatória. /* evitar e de criar o personagem dentro de uma base*/ caso for um local de base fazer o calculo novamente. 
+heroi.habilidades = ;
 --habilidades == {h1,h2,h2,h4,h5,h6} //vetor simples.
+heroi.experiência = ;
 --experiência == aumenta quando a missão acontece. //poderíamos aumentar quando ele se desloca, mas ele também pode ser expulso da base.
+heroi.deslocamento = ;
 --deslocamento == tempo para a missão mais próxima.
 ---verificar todas as bases -> escolher a mais próxima. 
 ----não retornar para base anterior.
 ---criar a função tempo que descide o tempo para chegar em outra base.
 ----evitar conflitos com outras bases.
+evento.heroi;
 --Morrer == v[H1] = NULL;
 
 -Base
