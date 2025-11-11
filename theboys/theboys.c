@@ -13,6 +13,7 @@ int main ()
 
 
   // iniciar o mundo
+	caracteŕisticas do mundo
 	
 /* Implementações Iniciasi.*/
 item com maior prioridade();
