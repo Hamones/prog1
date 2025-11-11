@@ -10,7 +10,10 @@
 // programa principal
 int main ()
 {
-	/* testes iniciais.*/
+
+
+  // iniciar o mundo
+		/* testes iniciais.*/
 item com maior prioridade();
 
 Mundo - tamanho do mundo. Base e Altura.
@@ -44,13 +47,8 @@ iniciar missões.
 - concluir a missão: verificar todos os conjuntos das bases.
 - decidir qual herói tomará a poção.
 
-
-
-	
-
-  // iniciar o mundos
-
   // executar o laço de simulação
+
 
   // destruir o mundo
 
