@@ -9,7 +9,7 @@
 // minimize o uso de variáveis globais
 
 // programa principal
-struct *(*cria_mundo)(){
+struct *(*cria_mundo)() //implementação aleatória para ponteiro de ponteiros.
 	int inicio; //retorno do para posição inicial do ponteiro.
 	int mundo*;
 
@@ -17,63 +17,69 @@ struct *(*cria_mundo)(){
 	if (!mundo)
 		return 0;
 
-	inicio = 
+	inicio = *mundo;
 	
-	for (i = 0; i <= MAX; i++)
+	for (i = 0; i <= MAX; i++){
 		mundo*++;
 		mundo = NULL;
+	}
 	
 	mundo = inicio;	
-	return mundo;
+	return *mundo;
 }
 
 struct *cria_heroi(){
 		int inicio; //retorno do para posição inicial do ponteiro.
-	int mundo*;
+	int heroi*;
 
-	mundo = malloc(sizeof(struct mundo);
+	heroi = malloc(sizeof(struct heroi);
 	if (!mundo)
 		return 0;
 
-	inicio = 
+	inicio = heroi; 
 	
 	for (i = 0; i <= MAX; i++)
 		mundo*++;
 		mundo = NULL;
 	
-	mundo = inicio;	
+	mundo = inicio;
+	return heroi
 }
 
 struct *cria_base(){
-		int inicio; //retorno do para posição inicial do ponteiro.
+	int inicio; //retorno do para posição inicial do ponteiro.
 	int mundo*;
 
-	mundo = malloc(sizeof(struct mundo);
+	mundo = malloc(sizeof(struct base);
 	if (!mundo)
 		return 0;
 
-	inicio = 
+	inicio = mundo;
 	
-	for (i = 0; i <= MAX; i++)
+	for (i = 0; i <= MAX; i++){
 		mundo*++;
 		mundo = NULL;
+	}
 	
-	mundo = inicio;	
+	mundo = inicio;
+
+	return base;
 }
 
 struct *cria_missao(){
 		int inicio; //retorno do para posição inicial do ponteiro.
 	int mundo*;
 
-	mundo = malloc(sizeof(struct mundo);
+	mundo = malloc(sizeof(struct missao);
 	if (!mundo)
 		return 0;
 
 	inicio = 
 	
-	for (i = 0; i <= MAX; i++)
+	for (i = 0; i <= MAX; i++){
 		mundo*++;
 		mundo = NULL;
+	}
 	
 	mundo = inicio;	
 }
