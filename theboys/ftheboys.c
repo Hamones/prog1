@@ -29,21 +29,21 @@ struct *(*cria_mundo)() //implementação aleatória para ponteiro de ponteiros.
 }
 
 struct *cria_heroi(){
-		int inicio; //retorno do para posição inicial do ponteiro.
+	int inicio; //retorno do para posição inicial do ponteiro.
 	int heroi*;
 
 	heroi = malloc(sizeof(struct heroi);
-	if (!mundo)
+	if (!heroi)
 		return 0;
 
 	inicio = heroi; 
 	
 	for (i = 0; i <= MAX; i++)
-		mundo*++;
-		mundo = NULL;
+		heroi++;
+		heroi = NULL;
 	
-	mundo = inicio;
-	return heroi
+	heroi = inicio;
+	return heroi;
 }
 
 struct *cria_base(){
@@ -57,13 +57,13 @@ struct *cria_base(){
 	inicio = mundo;
 	
 	for (i = 0; i <= MAX; i++){
-		mundo*++;
+		mundo*++; //atualizamos ao próximo ponteiro.
 		mundo = NULL;
 	}
 	
 	mundo = inicio;
 
-	return base;
+	return mundo;
 }
 
 struct *cria_missao(){
