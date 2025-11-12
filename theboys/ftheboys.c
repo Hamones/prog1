@@ -20,7 +20,7 @@ struct *(*cria_mundo)() //implementação aleatória para ponteiro de ponteiros.
 	inicio = *mundo;
 	
 	for (i = 0; i <= MAX; i++){
-		mundo*++;
+		mundo++;
 		mundo = NULL;
 	}
 	
