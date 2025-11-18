@@ -1,76 +1,92 @@
-// programa principal do projeto "The Boys - 2024/2"
-// Autor: Ramon Cesar Santos Alves, GRR 20204080
+#ifndef THEBOYS
+#define THEBOYS
 
-// seus #includes vão aqui
-#include "ftheboys.c"
-// seus #defines vão aqui
+// Includes necessarios para os TADs
+#include "fila.h"
+#include "fprio.h"
+#include "conjunto.h"
 
-// minimize o uso de variáveis globais
+// Defines globais para o projeto
+#define MAX 10000       // Limite maximo de herois/bases/missoes
+#define MAX_HABILIDADES 20  // Exemplo: O numero maximo de habilidades possiveis (0 a 19)
+#define MAX_HEROIS 100      // Exemplo: O numero maximo de herois que uma base pode rastrear
 
-// programa principal
-int main ()
+// --- DEFINICOES DAS ESTRUTURAS ---
+// (Estas definicoes devem estar no .h para que o main e ftheboys saibam como sao)
+
+struct heroi
 {
+    int ID;                // numero inteiro >= 0 que identifica unicamente o heroi;
+    struct cjto_t *Habilidades; // Conjunto de habilidades (TAD conjunto)
+    int Paciencia;         // numero inteiro >= 0
+    int Velocidade;        // numero inteiro >= 0
+    int experiencia;       // numero inteiro >= 0
+    int Base;              // ID da base onde o heroi se encontra (-1 se nenhuma)
+};
+
+struct base
+{
+    int ID;                // numero inteiro >= 0 que identifica cada base;
+    int Lotacao;           // numero maximo de herois naquela base;
+    struct cjto_t *presentes; // Conjunto de IDs dos herois presentes (TAD conjunto)
+    struct fila_t *Espera; // Fila de herois esperando (TAD fila)
+    int local_x;           // Coordenada X
+    int local_y;           // Coordenada Y
+};
+
+struct missao
+{
+    int ID;                // numero inteiro >= 0 que identifica a missao;
+    struct cjto_t *Habilidades; // Conjunto de habilidades necessarias (TAD conjunto)
+    int local_x;           // Coordenada X
+    int local_y;           // Coordenada Y
+};
+
+struct mundo
+{
+    int NHerois;       // numero total de herois no mundo;
+    struct heroi *H[MAX]; // Array de ponteiros para herois
+    int NBases;        // numero total de bases no mundo;
+    struct base *B[MAX]; // Array de ponteiros para bases
+    int NMissoes;      // numero total de missoes a cumprir;
+    struct missao *M[MAX]; // Array de ponteiros para missoes
+};
 
 
-  // iniciar o mundo
-	caracteŕisticas do mundo
-	
-/* Implementações Iniciasi.*/
+/* --- PROTOTIPOS DAS FUNCOES (de ftheboys.c) --- */
 
+/**
+ * Cria e inicializa uma estrutura 'mundo' vazia.
+ * Retorna: ponteiro para o mundo criado ou NULL se falhar.
+ */
+struct mundo *cria_mundo(int tam);
 
-int **mundo;
-int *heroi;
-int *missao;
-int *base;
+/**
+ * Adiciona um novo heroi aleatorio ao mundo.
+ * Retorna: ponteiro para o heroi adicionado ou NULL se falhar (ex: mundo cheio).
+ */
+struct heroi *adiciona_heroi(struct mundo *world);
 
-Mundo - tamanho do mundo. Base e Altura.
-mundo()
+/**
+ * Adiciona uma nova base aleatoria ao mundo.
+ * Retorna: ponteiro para a base adicionada ou NULL se falhar.
+ */
+struct base *adiciona_base(struct mundo *world, int mundo_tam_x, int mundo_tam_y);
 
--Herói
---criar vetor herois [];
-heroi = cria_heroi();
-heroi.posição = ;
---posição(variável) == posiçao inicial (Rand(min max) //(x,y) que seria a posição aleatória. /* evitar e de criar o personagem dentro de uma base*/ caso for um local de base fazer o calculo novamente. 
-heroi.habilidades = ;
---habilidades == {h1,h2,h2,h4,h5,h6} //vetor simples.
-heroi.experiência = ;
---experiência == aumenta quando a missão acontece. //poderíamos aumentar quando ele se desloca, mas ele também pode ser expulso da base.
-heroi.deslocamento = ;
---deslocamento == tempo para a missão mais próxima.
----verificar todas as bases -> escolher a mais próxima. 
-----não retornar para base anterior.
----criar a função tempo que descide o tempo para chegar em outra base.
-----evitar conflitos com outras bases.
-evento.heroi;
---Morrer == v[H1] = NULL;
+/**
+ * Adiciona uma nova missao aleatoria ao mundo.
+ * Retorna: ponteiro para a missao adicionada ou NULL se falhar.
+ */
+struct missao *adiciona_missao(struct mundo *world, int mundo_tam_x, int mundo_tam_y);
 
--Base
---criar vetor base[].
---posição (fixa) == posição inicial (Rand(min Max)) // (x,y) que seria a posição aleatória. /*evitar que uma missão fique dentro.
---lista de heróis (o tamanho varia?) == 
---lista de espera (fixo) == 
---porteiro ==  
+/**
+ * Libera toda a memoria alocada pelo mundo e seus componentes
+ * (herois, bases, missoes e seus TADs internos).
+ * Retorna: NULL.
+ */
+struct mundo *destroi_mundo(struct mundo *world);
 
+// (Voce deve adicionar aqui os prototipos de todas as outras
+// funcoes de ftheboys.c que a main (theboys.c) precisa chamar)
 
-  // executar o laço de simulação
-/*Eventos*/
-
-iniciar evento com maior prioridade.
-gerar novos eventos na fila de prioridade.
-executar alterações no mundo.
-
-iniciar eventos pequenos.
-- deslocamento do herói.
-iniciar eventos grandes.
-- tempo de permanência do herói
---se agente sair = atualzar conjunto
-iniciar missões.
-- concluir a missão: verificar todos os conjuntos das bases.
-- decidir qual herói tomará a poção.
-
-  // destruir o mundo
-/*Liberar ponteiros:
-- Executar de funções destroi para todos os ponteiros.*/
-  return (0) ;
-}
-
+#endif
