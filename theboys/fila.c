@@ -1,205 +1,79 @@
-/* 
- * Programa para testar a liblista.
- * feito por Marcos Castilho em 05/04/2022
-*/
+// Tipo abstrato de dado "conjunto de inteiros"
+// Prof. Carlos Maziero - DINF/UFPR, Out 2024
+//
+// Este TAD implementa um conjunto de números inteiros com capacidade para
+// até CAP valores entre 0 e CAP-1, definida no momento de sua criação.
+//
+// Implementação com vetor de booleanos.
 
-#include <stdio.h>
-#include "lista.h"
+#ifndef CONJUNTO
+#define CONJUNTO
 
-#define MAX 5
+#include <stdbool.h>
 
-void imprimir_lista (struct lista *l){
-    int chave;
-
-    if (lista_vazia (l)){
-        printf ("lista vazia\n");
-        return;
-    }
-
-    lista_inicia_iterador (l);
-    lista_incrementa_iterador (l, &chave);
-    printf ("%d", chave);
-    while (lista_incrementa_iterador (l, &chave))
-        printf (" %d", chave);
-    printf ("\n");
-}
-
-struct lista *teste_criar_lista ()
+// estrutura que implementa um conjunto de inteiros
+struct cjto_t
 {
-    struct lista *l;
+  int cap ;			// Capacidade do conjunto
+  int num ;			// Número de itens (cardinalidade)
+  bool *flag ;			// Vetor de booleanos
+} ;
 
-    if (! (l = lista_cria ()))
-        fprintf (stderr, "Falha na alocacao da lista\n");
+// Cria um conjunto vazio para armazenar até CAP valores entre 0 e CAP-1
+// Retorno: ponteiro para o novo conjunto ou NULL em erro.
+struct cjto_t *cjto_cria (int cap) ;
 
-    return l;
-}
+// Destrói o conjunto, liberando a memória ocupada por ele.
+// Retorno: NULL
+struct cjto_t *cjto_destroi (struct cjto_t *c) ;
 
-void teste_lista_vazia (struct lista *l)
-{
-    if (lista_vazia (l))
-        printf ("lista esta vazia");
-    else
-        printf ("lista nao esta vazia");
-}
+// Cria e retorna uma cópia do conjunto c.
+// Retorno: ponteiro para o novo conjunto ou NULL em erro.
+struct cjto_t *cjto_copia (struct cjto_t *c) ;
 
-void teste_insere_inicio (struct lista *l, int limite)
-{
-    int i;
+// Cria um conjunto para até CAP valores preenchido
+// com N itens aleatórios na faixa [0...CAP-1].
+// Retorno: ponteiro para o novo conjunto ou NULL em erro.
+struct cjto_t *cjto_aleat (int n, int cap) ;
 
-    for (i=1; i <= limite; i++)
-    {
-        if (! lista_insere_inicio (l, i + 10)){
-            printf ("Lista cheia, nao inseriu.\n");
-            return;
-        }
-        imprimir_lista (l);
-    }
-}
+// Insere um item no conjunto. Ignora se item não estiver entre 0 e CAP-1.
+// Retorno: número de itens no conjunto após a operação ou -1 em erro.
+int cjto_insere (struct cjto_t *c, int item) ;
 
-void teste_insere_fim (struct lista *l, int limite)
-{
-    int i;
+// Retira um item do conjunto. Ignora se item não estiver entre 0 e CAP-1.
+// Retorno: número de itens no conjunto após a operação ou -1 em erro.
+int cjto_retira (struct cjto_t *c, int item) ;
 
-    for (i=1; i <= limite; i++)
-    {
-        if (! lista_insere_fim (l, i + 10)){
-            printf ("Lista cheia, nao inseriu.\n");
-            return;
-        }
-        imprimir_lista (l);
-    }
-}
+// Informa a cardinalidade (número de itens) do conjunto.
+// Retorno: número de itens no conjunto ou -1 em erro.
+int cjto_card (struct cjto_t *c) ;
 
-void teste_remove_inicio (struct lista *l)
-{
-    int chave;
+// Testa se o item está no conjunto.
+// Retorno: 1 se está no conjunto, 0 se não está ou -1 em erro.
+int cjto_pertence (struct cjto_t *c, int item) ;
 
-    /* remove todo mundo */
-    while (! lista_vazia (l))
-        if (lista_remove_inicio (l, &chave))
-            imprimir_lista (l);
-}
+// Testa se os conjuntos c1 e c2 têm os mesmos itens.
+// Retorno: 1 se c1 == c2, 0 se não ou -1 em erro.
+int cjto_iguais (struct cjto_t *c1, struct cjto_t *c2) ;
 
-void teste_remove_fim (struct lista *l)
-{
-    int chave;
+// Testa se o conjunto c1 contém o conjunto c2.
+// Retorno: 1 se c1 contém c2, 0 se não ou -1 em erro.
+int cjto_contem (struct cjto_t *c1, struct cjto_t *c2) ;
 
-    /* remove todo mundo */
-    while (! lista_vazia (l))
-        if (lista_remove_fim (l, &chave))
-            imprimir_lista (l);
-}
+// Cria e retorna o conjunto uniao entre os conjunto c1 e c2.
+// Retorno: ponteiro para o novo conjunto ou NULL em erro.
+struct cjto_t *cjto_uniao (struct cjto_t *c1, struct cjto_t *c2) ;
 
-void teste_insere_ordenado (struct lista *l)
-{
-    lista_insere_ordenado (l, 13); imprimir_lista (l);
-    lista_insere_ordenado (l, 15); imprimir_lista (l);
-    lista_insere_ordenado (l, 11); imprimir_lista (l);
-    lista_insere_ordenado (l, 12); imprimir_lista (l);
-    lista_insere_ordenado (l, 14); imprimir_lista (l);
-}
+// Cria e retorna o conjunto interseção entre os conjunto c1 e c2.
+// Retorno: ponteiro para o novo conjunto ou NULL em erro.
+struct cjto_t *cjto_inter (struct cjto_t *c1, struct cjto_t *c2) ;
 
+// Cria e retorna o conjunto diferença c1 - c2.
+// Retorno: ponteiro para o novo conjunto ou NULL em erro.
+struct cjto_t *cjto_dif (struct cjto_t *c1, struct cjto_t *c2) ;
 
-void teste_remove_ordenado (struct lista *l)
-{
-    lista_remove_ordenado (l, 13); imprimir_lista (l);
-    lista_remove_ordenado (l, 15); imprimir_lista (l);
-    lista_remove_ordenado (l, 11); imprimir_lista (l);
-    lista_remove_ordenado (l, 12); imprimir_lista (l);
-    lista_remove_ordenado (l, 14); imprimir_lista (l);
-}
+// Imprime o conteúdo do conjunto no formato "item item ...",
+// com um espaço entre itens, sem espaços antes/depois e sem \n no fim
+void cjto_imprime (struct cjto_t *c) ;
 
-void teste_de_pertinencia (struct lista *l)
-{
-    lista_insere_inicio (l, 13);
-    lista_insere_inicio (l, 15);
-    lista_insere_inicio (l, 11);
-    lista_insere_inicio (l, 12);
-    lista_insere_inicio (l, 14);
-    /*imprimir_lista (l);*/
-    imprimir_lista (l);
-    if (lista_pertence (l, 11)) printf ("11 pertence\n");
-    if (lista_pertence (l, 12)) printf ("12 pertence\n");
-    if (lista_pertence (l, 13)) printf ("13 pertence\n");
-    if (lista_pertence (l, 14)) printf ("14 pertence\n");
-    if (lista_pertence (l, 15)) printf ("15 pertence\n");
-    if (! lista_pertence (l, 10)) printf ("10 nao pertence\n");
-    if (! lista_pertence (l, 16)) printf ("16 nao pertence\n");
-}
-
-int main (void)
-{
-    struct lista *l;
-    int chave;
-
-    printf ("Teste 1: criar lista e ver se esta vazia:\n");
-    printf ("Esperado: tem que imprimir mensagem 'lista esta vazia'\n");
-    l = teste_criar_lista ();
-    teste_lista_vazia (l);
-    printf ("\n\n");
-
-    printf ("Teste 2: tenta remover elemento com lista vazia:\n");
-    printf ("Esperado: nao pode ter dado segfault\n");
-    if (! lista_remove_inicio (l, &chave))
-        printf ("\tOK: remover da lista vazia nao deu segfault.\n");
-    printf ("\n\n");
-
-    printf ("Teste 3: inserir 5 elementos no inicio:\n");
-    printf ("Esperado: tem que imprimir a lista 5 vezes, a cada vez com o maior elemento no inicio. \n");
-    printf ("\nATENCAO: se nao imprimir a lista corretamente o erro pode estar:\n");
-    printf ("- ou na insercao\n");
-    printf ("- ou na implementacao das funcoes que controlam o iterador\n");
-    printf ("- voce pode implementar TEMPORARIAMENTE uma funcao que imprime a lista acessando os nodos diretamente, ate encontrar o problema.\n");
-    teste_insere_inicio (l, MAX); 
-    printf ("\n\n");
-
-    printf ("Teste 4: esvaziar a lista retirando do inicio:\n");
-    printf ("Esperado: tem que imprimir a lista 5 vezes, a cada vez sem o primeiro elemento\n");
-    printf ("          Ao final, mostrar a mensagem 'lista vazia'\n");
-    teste_remove_inicio (l); 
-    printf ("\n\n");
-
-    printf ("Teste 5: inserir 5 elementos no fim:\n");
-    printf ("Esperado: tem que imprimir a lista 5 vezes, a cada vez com o maior elemento no fim\n");
-    teste_insere_fim (l, MAX); 
-    printf ("\n\n");
-
-    printf ("Teste 6: esvaziar a lista retirando do fim:\n");
-    printf ("Esperado: tem que imprimir a lista 5 vezes, a cada vez sem o maior elemento\n");
-    printf ("          Ao final, mostrar a mensagem 'lista vazia'\n");
-    teste_remove_fim (l); 
-    printf ("\n\n");
-
-    printf ("Teste 7: inserir 5 elementos em ordem:\n");
-    printf ("Esperado: tem que imprimir a lista 5 vezes, sempre ordenada\n");
-    printf ("Esperado: tem que mostrar remover de 11 ate 15\n");
-    teste_insere_ordenado (l); 
-    printf ("\n\n");
-
-    printf ("Teste 8: remover 5 elementos em ordem:\n");
-    printf ("Esperado: tem que imprimir a lista 5 vezes, sempre ordenada\n");
-    printf ("          Ao final, mostrar a mensagem 'lista vazia'\n");
-    teste_remove_ordenado (l); 
-    printf ("\n\n");
-
-    printf ("Teste 9: teste de pertinencia \n");
-    printf ("Esperado: apos imprimir a lista, tem que mostrar que de 11 a 15 pertence\n");
-    printf ("          E que 10 e 16 nao pertencem\n");
-    teste_de_pertinencia (l); 
-    printf ("\n\n");
-
-    printf ("Teste 10: destruir uma lista com elementos:\n");
-    printf ("Esperado: nao pode ter leak (conferir com valdrind)\n");
-    printf ("          E nao pode ter segfault\n");
-    lista_destroi (&l);
-    printf ("\n\n");
-
-    printf ("Teste 11: destruir uma lista vazia:\n");
-    printf ("Esperado: nao pode ter leak (conferir com valdrind)\n");
-    printf ("          E nao pode ter segfault\n");
-    l = lista_cria ();
-    lista_destroi (&l);
-    printf ("\n\n");
-
-    return 0;
-}
+#endif
