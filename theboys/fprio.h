@@ -1,56 +1,76 @@
-// TAD Fila de prioridades (FPRIO) genérica
-// Carlos Maziero, DINF/UFPR, Out 2024
-// Definição da interface
+// programa principal do projeto "The Boys - 2024/2"
+// Autor: Ramon Cesar Santos Alves, GRR 20204080
 
-// NÃO ALTERAR
+// seus #includes vão aqui
+#include "ftheboys.c"
+// seus #defines vão aqui
 
-#ifndef FPRIO
-#define FPRIO
+// minimize o uso de variáveis globais
 
-// descreve um nodo da fila de prioridades
-struct fpnodo_t
+// programa principal
+int main ()
 {
-	void *item ;			// item associado ao nodo
-	int   tipo ;			// tipo do item
-	int   prio ;			// prioridade do item
-	struct fpnodo_t *prox;	// próximo nodo
-};
 
-// descreve uma fila de prioridades
-struct fprio_t
-{
-	struct fpnodo_t *prim ;	// primeiro nodo da fila
-	struct fpnodo_t *fim;		// último nodo da fila
-	int num ;			// número de itens na fila
-} ;
 
-// Cria uma fila vazia.
-// Retorno: ponteiro para a fila criada ou NULL se erro.
-struct fprio_t *fprio_cria ();
+  // iniciar o mundo
+	caracteŕisticas do mundo
+	
+/* Implementações Iniciasi.*/
 
-// Libera todas as estruturas de dados da fila, inclusive os itens.
-// Retorno: NULL.
-struct fprio_t *fprio_destroi (struct fprio_t *f);
 
-// Insere o item na fila, mantendo-a ordenada por prioridades crescentes.
-// Itens com a mesma prioridade devem respeitar a politica FIFO (retirar
-// na ordem em que inseriu).
-// Inserir duas vezes o mesmo item (o mesmo ponteiro) é um erro.
-// Retorno: número de itens na fila após a operação ou -1 se erro.
-int fprio_insere (struct fprio_t *f, void *item, int tipo, int prio);
+int **mundo;
+int *heroi;
+int *missao;
+int *base;
 
-// Retira o primeiro item da fila e o devolve; o tipo e a prioridade
-// do item são devolvidos nos parâmetros "tipo" e "prio".
-// Retorno: ponteiro para o item retirado ou NULL se fila vazia ou erro.
-void *fprio_retira (struct fprio_t *f, int *tipo, int *prio);
+Mundo - tamanho do mundo. Base e Altura.
+mundo()
 
-// Informa o número de itens na fila.
-// Retorno: N >= 0 ou -1 se erro.
-int fprio_tamanho (struct fprio_t *f);
+-Herói
+--criar vetor herois [];
+heroi = cria_heroi();
+heroi.posição = ;
+--posição(variável) == posiçao inicial (Rand(min max) //(x,y) que seria a posição aleatória. /* evitar e de criar o personagem dentro de uma base*/ caso for um local de base fazer o calculo novamente. 
+heroi.habilidades = ;
+--habilidades == {h1,h2,h2,h4,h5,h6} //vetor simples.
+heroi.experiência = ;
+--experiência == aumenta quando a missão acontece. //poderíamos aumentar quando ele se desloca, mas ele também pode ser expulso da base.
+heroi.deslocamento = ;
+--deslocamento == tempo para a missão mais próxima.
+---verificar todas as bases -> escolher a mais próxima. 
+----não retornar para base anterior.
+---criar a função tempo que descide o tempo para chegar em outra base.
+----evitar conflitos com outras bases.
+evento.heroi;
+--Morrer == v[H1] = NULL;
 
-// Imprime o conteúdo da fila no formato "(tipo prio) (tipo prio) ..."
-// Para cada item deve ser impresso seu tipo e sua prioridade, com um
-// espaço entre valores, sem espaços antes ou depois e sem nova linha.
-void fprio_imprime (struct fprio_t *f);
+-Base
+--criar vetor base[].
+--posição (fixa) == posição inicial (Rand(min Max)) // (x,y) que seria a posição aleatória. /*evitar que uma missão fique dentro.
+--lista de heróis (o tamanho varia?) == 
+--lista de espera (fixo) == 
+--porteiro ==  
 
-#endif
+
+  // executar o laço de simulação
+/*Eventos*/
+
+iniciar evento com maior prioridade.
+gerar novos eventos na fila de prioridade.
+executar alterações no mundo.
+
+iniciar eventos pequenos.
+- deslocamento do herói.
+iniciar eventos grandes.
+- tempo de permanência do herói
+--se agente sair = atualzar conjunto
+iniciar missões.
+- concluir a missão: verificar todos os conjuntos das bases.
+- decidir qual herói tomará a poção.
+
+  // destruir o mundo
+/*Liberar ponteiros:
+- Executar de funções destroi para todos os ponteiros.*/
+  return (0) ;
+}
+
