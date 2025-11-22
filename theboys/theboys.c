@@ -1,92 +1,43 @@
-#ifndef THEBOYS
-#define THEBOYS
+// programa principal do projeto "The Boys - 2024/2"
+// Autor: Ramon Cesar Santos Alves, GRR 20204080
 
-// Includes necessarios para os TADs
-#include "fila.h"
-#include "fprio.h"
-#include "conjunto.h"
+// seus #includes vão aqui
+#include "theboys.h"
+// seus #defines vão aqui
+#define q  20000
 
-// Defines globais para o projeto
-#define MAX 10000       // Limite maximo de herois/bases/missoes
-#define MAX_HABILIDADES 20  // Exemplo: O numero maximo de habilidades possiveis (0 a 19)
-#define MAX_HEROIS 100      // Exemplo: O numero maximo de herois que uma base pode rastrear
+// minimize o uso de variáveis globais
 
-// --- DEFINICOES DAS ESTRUTURAS ---
-// (Estas definicoes devem estar no .h para que o main e ftheboys saibam como sao)
-
-struct heroi
+// programa principal
+int main ()
 {
-    int ID;                // numero inteiro >= 0 que identifica unicamente o heroi;
-    struct cjto_t *Habilidades; // Conjunto de habilidades (TAD conjunto)
-    int Paciencia;         // numero inteiro >= 0
-    int Velocidade;        // numero inteiro >= 0
-    int experiencia;       // numero inteiro >= 0
-    int Base;              // ID da base onde o heroi se encontra (-1 se nenhuma)
-};
+  // 1. Inicialização
+  srand(time(NULL)); // Inicializar números aleatórios
+  int TAM_MUNDO_X = MAX;
+  int TAM_MUNDO_Y = MAX;
+  struct mundo *world = cria_mundo(MAX);
+  struct fprio_t *fila_eventos = fprio_cria();
+  // 2. Popular o mundo (Exemplo: 10 Heróis, 3 Bases)
+  for (int i = 0; i < 10; i++) {
+    struct heroi *h = adiciona_heroi(world);
+    // Lógica inicial de alocação de heróis a bases (TBD)
+  }
+  for (int i = 0; i < 3; i++){
+    adiciona_base(world, TAM_MUNDO_X, TAM_MUNDO_Y);
+    adiciona_missao(world, TAM_MUNDO_X, TAM_MUNDO_Y);
+  } // 1 Missão inicial
+  // 3. Laço de Simulação (Event Loop)
+  while (fprio_tamanho(fila_eventos) > 0 /* || outras condições de parada */)
+  {
+    int tipo, prio;
+    struct evento *ev = fprio_retira(fila_eventos, &tipo, &prio);
+    // Atualizar o tempo de simulação (se necessário)
+    // processa_evento(world, fila_eventos, ev); // Função TBD
+    // free(ev);
+  }
+  // 4. Destruir o mundo
+  // ... liberar fila_eventos e mundo ...
+  destroi_mundo(world);
+  return 0;
+}
 
-struct base
-{
-    int ID;                // numero inteiro >= 0 que identifica cada base;
-    int Lotacao;           // numero maximo de herois naquela base;
-    struct cjto_t *presentes; // Conjunto de IDs dos herois presentes (TAD conjunto)
-    struct fila_t *Espera; // Fila de herois esperando (TAD fila)
-    int local_x;           // Coordenada X
-    int local_y;           // Coordenada Y
-};
-
-struct missao
-{
-    int ID;                // numero inteiro >= 0 que identifica a missao;
-    struct cjto_t *Habilidades; // Conjunto de habilidades necessarias (TAD conjunto)
-    int local_x;           // Coordenada X
-    int local_y;           // Coordenada Y
-};
-
-struct mundo
-{
-    int NHerois;       // numero total de herois no mundo;
-    struct heroi *H[MAX]; // Array de ponteiros para herois
-    int NBases;        // numero total de bases no mundo;
-    struct base *B[MAX]; // Array de ponteiros para bases
-    int NMissoes;      // numero total de missoes a cumprir;
-    struct missao *M[MAX]; // Array de ponteiros para missoes
-};
-
-
-/* --- PROTOTIPOS DAS FUNCOES (de ftheboys.c) --- */
-
-/**
- * Cria e inicializa uma estrutura 'mundo' vazia.
- * Retorna: ponteiro para o mundo criado ou NULL se falhar.
- */
-struct mundo *cria_mundo(int tam);
-
-/**
- * Adiciona um novo heroi aleatorio ao mundo.
- * Retorna: ponteiro para o heroi adicionado ou NULL se falhar (ex: mundo cheio).
- */
-struct heroi *adiciona_heroi(struct mundo *world);
-
-/**
- * Adiciona uma nova base aleatoria ao mundo.
- * Retorna: ponteiro para a base adicionada ou NULL se falhar.
- */
-struct base *adiciona_base(struct mundo *world, int mundo_tam_x, int mundo_tam_y);
-
-/**
- * Adiciona uma nova missao aleatoria ao mundo.
- * Retorna: ponteiro para a missao adicionada ou NULL se falhar.
- */
-struct missao *adiciona_missao(struct mundo *world, int mundo_tam_x, int mundo_tam_y);
-
-/**
- * Libera toda a memoria alocada pelo mundo e seus componentes
- * (herois, bases, missoes e seus TADs internos).
- * Retorna: NULL.
- */
-struct mundo *destroi_mundo(struct mundo *world);
-
-// (Voce deve adicionar aqui os prototipos de todas as outras
-// funcoes de ftheboys.c que a main (theboys.c) precisa chamar)
-
-#endif

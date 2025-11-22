@@ -1,5 +1,6 @@
 # makefile The Boys
 # Carlos Maziero - DINF/UFPR, 2024/2
+# Adaptado para incluir ftheboys.o e theboys.h
 
 CC      = gcc
 CFLAGS  = -Wall -Wextra -Werror -g -std=c99
@@ -7,20 +8,23 @@ LDLIBS  = -lm
 MAIN    = theboys
 ENTREGA = $(MAIN)
 
-# lista de arquivos de cabeçalho (a completar)
-HDR = fila.h fprio.h conjunto.h
+# lista de arquivos de cabeçalho
+# Adicionado theboys.h
+HDR = fila.h fprio.h conjunto.h theboys.h
 
-# lista de arquivos-objeto (a completar)
-# não inclua conjunto.o, senão ele será removido com "make clean"
-OBJ = fila.o fprio.o theboys.o
+# lista de arquivos-objeto auxiliares
+# Adicionado ftheboys.o e removido theboys.o (ele é tratado separadamente como MAIN)
+OBJ = fila.o fprio.o ftheboys.o
 
 # construir o executável
 $(MAIN): $(MAIN).o $(OBJ) conjunto.o
+	$(CC) $(CFLAGS) -o $(MAIN) $(MAIN).o $(OBJ) conjunto.o $(LDLIBS)
 
-# construir os arquivos-objeto (a completar)
+# construir o objeto principal
 $(MAIN).o: $(MAIN).c $(HDR)
 
-# construir os TADs
+# construir os objetos auxiliares
+ftheboys.o: ftheboys.c theboys.h
 fila.o: fila.c fila.h
 fprio.o: fprio.c fprio.h
 
@@ -42,6 +46,6 @@ tgz: clean
 	@echo "Arquivo $(ENTREGA).tgz criado para entrega"
 
 # limpar arquivos temporários
+# Nota: conjunto.o NÃO é removido
 clean:
-	rm -f *~ $(OBJ) $(MAIN) /tmp/$(USER)/$(ENTREGA) $(ENTREGA).tgz
-
+	rm -f *~ $(OBJ) $(MAIN).o $(MAIN) /tmp/$(USER)/$(ENTREGA) $(ENTREGA).tgz

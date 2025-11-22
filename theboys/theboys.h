@@ -1,52 +1,103 @@
 #ifndef THEBOYS
 #define THEBOYS
+
+// Includes dos TADs
 #include "fila.h"
-#include "pfrio.h"
-#MAX 10000
-// descreve um nodo da fila 
-struct mundo
-{
-  int NHerois;  // n´umero total de her´ois no mundo;
-  int Herois[MAX]; //vetor representando todos os her´ois;
-  int NBases;   //n´umero total de bases no mundo;
-  int Bases[MAX];  // vetor representando todas as bases;
-  int NMissoes;  // n´umero total de miss˜oes a cumprir;
-  int Missoes[MAX];// vetor representando todas as miss˜oes;
+#include "fprio.h"
+#include "conjunto.h"
+
+// --- Constantes Globais ---
+#define MAX_HEROIS      100   // Limite exemplo
+#define MAX_BASES       20    // Limite exemplo
+#define MAX_MISSOES     50    // Limite exemplo
+#define MAX_HABILIDADES 10    // Habilidades de 0 a 9
+#define T_INICIO        0
+#define T_FIM_DO_MUNDO  525600 // Exemplo: 1 ano em minutos
+
+// Dimensões do mundo (usado para gerar coordenadas aleatórias)
+#define N_TAMANHO_MUNDO 20000 
+
+// --- Códigos dos Eventos (para a FPRIO) ---
+#define EV_CHEGA   1
+#define EV_ESPERA  2
+#define EV_DESISTE 3
+#define EV_AVISA   4
+#define EV_ENTRA   5
+#define EV_SAI     6
+#define EV_VIAJA   7
+#define EV_MISSAO  8
+#define EV_FIM     9
+
+// --- Estrutura do Evento ---
+// Esta estrutura será o "void *item" armazenado na FPRIO
+struct evento {
+    int tempo;      // Momento em que ocorre
+    int tipo;       // EV_CHEGA, EV_SAI, etc.
+    int dado1;      // Geralmente ID do herói ou da missão
+    int dado2;      // Geralmente ID da base (destino ou origem)
 };
-ID: n´umero inteiro ≥ 0 que identifica a miss˜ao;
-• Habilidades: conjunto de habilidades necess´arias para cumprir a miss˜ao;
-• Local: localiza¸c˜ao da miss˜ao (par de coordenadas inteiras X, Y ≥ 0).
-// descreve uma fila 
+
+// --- Estruturas do Mundo ---
+
 struct heroi
 {
-  int ID;          //  numero inteiro ≥ 0 que identifica unicamente o her´oi;
-  int Habilidades; // conjunto de habilidades que o her´oi possui. Cada habilidade eh representada por um n´umero inteiro ≥ 0;
-  int Paciencia;  // n´umero inteiro ≥ 0 que indica qu˜ao paciente uma pessoa ´e. Em  nosso modelo, isso afeta as decis˜oes de permanˆencia em bases e filas;
-  int Velocidade;// n´umero inteiro ≥ 0 indicando a velocidade de deslocamento de um her´oi, que ir´a afetar o tempo de deslocamento entre as bases;
-  int Experiência; n´umero inteiro ≥ 0 que indica o n´umero de miss˜oes em que o her´oi ´a participou;
-  int Base; //ID da base onde o her´oi se encontra no momento.
-} ;
+    int ID;                // Identificador único
+    struct cjto_t *Habilidades; // Conjunto de habilidades
+    int Paciencia;         // Quão disposto está a esperar
+    int Velocidade;        // Velocidade de deslocamento
+    int experiencia;       // XP acumulado
+    int Base;              // ID da base atual (-1 se nenhuma)
+};
+
 struct base
 {
-  int ID; // n´umero inteiro ≥ 0 que identifica cada base;
-  int Lotacao; // n´umero m´aximo de her´ois naquela base;
-  struct conj Presentes: //conjunto dos IDs dos her´ois que est˜ao atualmente na base, constituem as equipes dispon´ıveis para realizar miss˜oes;
-  int Espera; // fila onde os her´ois esperam para poder entrar na base;
-  int Local; // localiza¸c˜ao da base (par de coordenadas inteiras X, Y ≥ 0).
+    int ID;                // Identificador único
+    int Lotacao;           // Capacidade máxima
+    struct cjto_t *presentes; // Conjunto de IDs dos heróis dentro da base
+    struct fila_t *Espera; // Fila de IDs dos heróis esperando
+    int local_x;           // Coordenada X
+    int local_y;           // Coordenada Y
 };
 
 struct missao
 {
-  int ID;         // n´umero inteiro ≥ 0 que identifica a miss˜ao;
-  int Habilidades;// conjunto de habilidades necess´arias para cumprir a miss˜ao;
-  int Local;      // localiza¸c˜ao da miss˜ao (par de coordenadas inteiras X, Y ≥ 0).
+    int ID;                // Identificador único
+    struct cjto_t *Habilidades; // Habilidades requeridas
+    int local_x;           // Coordenada X
+    int local_y;           // Coordenada Y
 };
 
-/*funções para theboys.c*/
+struct mundo
+{
+    int NHerois;           // Quantidade atual
+    struct heroi *H[MAX_HEROIS]; // Vetor de ponteiros
+    
+    int NBases;
+    struct base *B[MAX_BASES];
+    
+    int NMissoes;
+    struct missao *M[MAX_MISSOES];
+    
+    int TamanhoMundoX;
+    int TamanhoMundoY;
+    int relogio;           // Tempo atual da simulação
+};
 
-struct *cria_heroi();
+// --- Protótipos das Funções (implementadas em ftheboys.c) ---
 
+// Criação e inicialização
+struct mundo *cria_mundo();
+struct heroi *adiciona_heroi(struct mundo *world);
+struct base *adiciona_base(struct mundo *world);
+struct missao *adiciona_missao(struct mundo *world);
 
+// Destruição
+void destroi_heroi(struct heroi *h);
+void destroi_base(struct base *b);
+void destroi_missao(struct missao *m);
+struct mundo *destroi_mundo(struct mundo *world);
 
+// Função auxiliar de aleatoriedade (útil para o main também)
+int aleat(int min, int max);
 
 #endif

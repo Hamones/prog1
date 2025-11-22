@@ -1,169 +1,65 @@
-// programa principal do projeto "The Boys - 2024/2"
-// Autor: Ramon Cesar Santos Alves, GRR 20204080
+// Implementação das funções auxiliares do projeto "The Boys"
+// ftheboys.c
 
-// seus #includes vão aqui
 #include <stdio.h>
-#include <stdlib.h> // Para malloc, free, rand, srand
-#include <string.h> // Para memset
-#include <time.h>   // Para time (usado no srand)
-
-#include "theboys.h"
-#include "conjunto.h" // Presume que inclui "fila.h" e "fprio.h" se necessario
-#include "fila.h"     // Incluido para struct fila_t
-
-//
-// NOTA: Estas structs deveriam estar em "theboys.h"
-// Elas estao corrigidas aqui.
-//
-
-// MAX_HABILIDADES e MAX_HEROIS precisam ser definidos
-// (provavelmente em theboys.h)
-#define MAX_HABILIDADES 20
-#define MAX_HEROIS 100
-
-struct heroi
-{
-    int ID;                // numero inteiro >= 0 que identifica unicamente o heroi;
-    struct cjto_t *Habilidades; // CORRIGIDO: Deve ser um ponteiro para o TAD
-    int Paciencia;         // numero inteiro >= 0
-    int Velocidade;        // numero inteiro >= 0
-    int experiencia;       // numero inteiro >= 0
-    int Base;              // ID da base onde o heroi se encontra (-1 se nenhuma)
-};
-
-struct base
-{
-    int ID;                // numero inteiro >= 0 que identifica cada base;
-    int Lotacao;           // numero maximo de herois naquela base;
-    struct cjto_t *presentes; // CORRIGIDO: Deve ser um ponteiro para o TAD
-    struct fila_t *Espera; // CORRIGIDO: Deve ser uma fila_t*
-    int local_x;           // CORRIGIDO: Coordenada X
-    int local_y;           // CORRIGIDO: Coordenada Y
-};
-
-struct missao
-{
-    int ID;                // numero inteiro >= 0 que identifica a missao;
-    struct cjto_t *Habilidades; // CORRIGIDO: Deve ser um ponteiro para o TAD
-    int local_x;           // CORRIGIDO: Coordenada X
-    int local_y;           // CORRIGIDO: Coordenada Y
-};
-
-struct mundo
-{
-    int NHerois;       // numero total de herois no mundo;
-    struct heroi *H[MAX]; // CORRIGIDO: Array de ponteiros para herois
-    int NBases;        // numero total de bases no mundo;
-    struct base *B[MAX]; // CORRIGIDO: Array de ponteiros para bases
-    int NMissoes;      // numero total de missoes a cumprir;
-    struct missao *M[MAX]; // CORRIGIDO: Array de ponteiros para missoes
-};
-
-/* --- Funcoes auxiliares --- */
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include "theboys.h" // Inclui todas as definições de structs e TADs
 
 // Gera um inteiro aleatorio entre min e max (inclusivo)
 int aleat(int min, int max)
 {
-    // Adicione srand(time(NULL)) no inicio da sua main()
     return (rand() % (max - min + 1)) + min;
 }
 
-/* --- Principais funções --- */
+// --- Funções de Criação (Auxiliares internas) ---
 
-// Cria o mundo
-struct mundo *cria_mundo(int tam) // "tam" parece ser o MAX
-{
-    struct mundo *world;
-
-    // Aloca memoria para UMA estrutura de mundo
-    world = malloc(sizeof(struct mundo));
-    if (!world)
-        return NULL; // Falha na alocacao
-
-    world->NHerois = 0;
-    world->NBases = 0;
-    world->NMissoes = 0;
-
-    // Inicializa os arrays de ponteiros como NULL
-    // (precisa de #include <string.h>)
-    memset(world->H, 0, sizeof(world->H));
-    memset(world->B, 0, sizeof(world->B));
-    memset(world->M, 0, sizeof(world->M));
-    
-    return world;
-}
-
-// Cria UM heroi (funcao auxiliar)
-struct heroi *cria_heroi_aleatorio(int id)
+// Cria UM heroi (função estática, usada apenas internamente aqui)
+static struct heroi *cria_heroi_aleatorio(int id)
 {
     struct heroi *h = malloc(sizeof(struct heroi));
-    if (!h)
-        return NULL; // Falha na alocacao
+    if (!h) return NULL;
 
     h->ID = id;
-    h->Paciencia = aleat(1, 10);
-    h->Velocidade = aleat(1, 10);
+    h->Paciencia = aleat(0, 100);  // Exemplo de paciência 0-100
+    h->Velocidade = aleat(50, 5000); // Exemplo de velocidade
     h->experiencia = 0;
-    h->Base = -1; // -1 significa "nenhuma base"
+    h->Base = -1; // Começa no "limbo"
 
-    // Inicializa o TAD Habilidades
+    // Cria conjunto de habilidades (capacidade máxima definida no .h)
     h->Habilidades = cjto_cria(MAX_HABILIDADES);
-    if (!h->Habilidades) {
-        free(h);
-        return NULL;
-    }
     
-    // Adiciona 3 habilidades aleatorias
-    cjto_insere(h->Habilidades, aleat(0, MAX_HABILIDADES - 1));
-    cjto_insere(h->Habilidades, aleat(0, MAX_HABILIDADES - 1));
-    cjto_insere(h->Habilidades, aleat(0, MAX_HABILIDADES - 1));
+    // Adiciona 2 a 5 habilidades aleatórias
+    int n_hab = aleat(2, 5);
+    for (int i=0; i < n_hab; i++) {
+        cjto_insere(h->Habilidades, aleat(0, MAX_HABILIDADES-1));
+    }
 
     return h;
 }
 
-// Adiciona um novo heroi ao mundo
-// (Implementando a funcao de theboys.h)
-struct heroi *adiciona_heroi(struct mundo *world)
-{
-    if (!world || world->NHerois >= MAX)
-        return NULL; // Mundo nao existe ou esta cheio
-
-    // Cria um novo heroi com o proximo ID disponivel
-    struct heroi *novo_heroi = cria_heroi_aleatorio(world->NHerois);
-    if (!novo_heroi)
-        return NULL; // Falha ao criar heroi
-
-    // Adiciona o heroi ao array do mundo
-    world->H[world->NHerois] = novo_heroi;
-    world->NHerois++;
-
-    return novo_heroi;
-}
-
-
-// Cria UMA base (funcao auxiliar)
-struct base *cria_base_aleatoria(int id, int mundo_tam_x, int mundo_tam_y)
+static struct base *cria_base_aleatoria(int id, int max_x, int max_y)
 {
     struct base *b = malloc(sizeof(struct base));
-    if (!b)
-        return NULL;
+    if (!b) return NULL;
 
     b->ID = id;
-    b->Lotacao = aleat(5, 20);
-    b->local_x = aleat(0, mundo_tam_x);
-    b->local_y = aleat(0, mundo_tam_y);
+    b->Lotacao = aleat(3, 10); // Capacidade da base
+    b->local_x = aleat(0, max_x);
+    b->local_y = aleat(0, max_y);
 
-    // Inicializa o TAD presentes
-    b->presentes = cjto_cria(MAX_HEROIS); // Pode guardar ate MAX_HEROIS IDs
-    if (!b->presentes) {
-        free(b);
-        return NULL;
-    }
-
-    // Inicializa o TAD fila
+    // Cria o conjunto de herois presentes (capacidade = total de herois possiveis)
+    b->presentes = cjto_cria(MAX_HEROIS);
+    
+    // Cria a fila de espera
     b->Espera = fila_cria();
-    if (!b->Espera) {
+
+    if (!b->presentes || !b->Espera) {
+        // Se falhar alocação de TAD, limpa e retorna erro
         cjto_destroi(b->presentes);
+        fila_destroi(b->Espera);
         free(b);
         return NULL;
     }
@@ -171,92 +67,147 @@ struct base *cria_base_aleatoria(int id, int mundo_tam_x, int mundo_tam_y)
     return b;
 }
 
-// Adiciona uma nova base ao mundo
-struct base *adiciona_base(struct mundo *world, int mundo_tam_x, int mundo_tam_y)
-{
-    if (!world || world->NBases >= MAX)
-        return NULL; // Mundo nao existe ou esta cheio
-
-    struct base *nova_base = cria_base_aleatoria(world->NBases, mundo_tam_x, mundo_tam_y);
-    if (!nova_base)
-        return NULL;
-
-    world->B[world->NBases] = nova_base;
-    world->NBases++;
-
-    return nova_base;
-}
-
-
-// Cria UMA missao (funcao auxiliar)
-struct missao *cria_missao_aleatoria(int id, int mundo_tam_x, int mundo_tam_y)
+static struct missao *cria_missao_aleatoria(int id, int max_x, int max_y)
 {
     struct missao *m = malloc(sizeof(struct missao));
-    if (!m)
-        return NULL;
+    if (!m) return NULL;
 
     m->ID = id;
-    m->local_x = aleat(0, mundo_tam_x);
-    m->local_y = aleat(0, mundo_tam_y);
+    m->local_x = aleat(0, max_x);
+    m->local_y = aleat(0, max_y);
 
+    // Habilidades requeridas pela missão
     m->Habilidades = cjto_cria(MAX_HABILIDADES);
-    if (!m->Habilidades) {
-        free(m);
-        return NULL;
-    }
-
-    // Adiciona 1 a 3 habilidades necessarias
-    int num_hab = aleat(1, 3);
-    for (int i = 0; i < num_hab; i++) {
-        cjto_insere(m->Habilidades, aleat(0, MAX_HABILIDADES - 1));
+    
+    // 6 a 10 habilidades necessárias
+    int n_hab = aleat(6, 10);
+    for (int i=0; i < n_hab; i++) {
+        cjto_insere(m->Habilidades, aleat(0, MAX_HABILIDADES-1));
     }
 
     return m;
 }
 
-// Adiciona uma nova missao ao mundo
-struct missao *adiciona_missao(struct mundo *world, int mundo_tam_x, int mundo_tam_y)
+// --- Funções Principais (Interface Pública) ---
+
+struct mundo *cria_mundo()
 {
-    if (!world || world->NMissoes >= MAX)
-        return NULL;
+    struct mundo *w = malloc(sizeof(struct mundo));
+    if (!w) return NULL;
 
-    struct missao *nova_missao = cria_missao_aleatoria(world->NMissoes, mundo_tam_x, mundo_tam_y);
-    if (!nova_missao)
-        return NULL;
+    w->NHerois = 0;
+    w->NBases = 0;
+    w->NMissoes = 0;
+    w->relogio = T_INICIO;
+    w->TamanhoMundoX = N_TAMANHO_MUNDO;
+    w->TamanhoMundoY = N_TAMANHO_MUNDO;
 
-    world->M[world->NMissoes] = nova_missao;
-    world->NMissoes++;
+    // Inicializa os vetores com NULL
+    for(int i=0; i<MAX_HEROIS; i++) w->H[i] = NULL;
+    for(int i=0; i<MAX_BASES; i++)  w->B[i] = NULL;
+    for(int i=0; i<MAX_MISSOES; i++) w->M[i] = NULL;
 
-    return nova_missao;
+    return w;
 }
 
-//
-// --- Funcoes de destruicao (Exemplo) ---
-//
-// Voce precisa criar funcoes para destruir tudo que foi alocado
+struct heroi *adiciona_heroi(struct mundo *w)
+{
+    if (!w || w->NHerois >= MAX_HEROIS) return NULL;
+
+    struct heroi *novo = cria_heroi_aleatorio(w->NHerois);
+    if (novo) {
+        w->H[w->NHerois] = novo;
+        w->NHerois++;
+    }
+    return novo;
+}
+
+struct base *adiciona_base(struct mundo *w)
+{
+    if (!w || w->NBases >= MAX_BASES) return NULL;
+
+    struct base *nova = cria_base_aleatoria(w->NBases, w->TamanhoMundoX, w->TamanhoMundoY);
+    if (nova) {
+        w->B[w->NBases] = nova;
+        w->NBases++;
+    }
+    return nova;
+}
+
+struct missao *adiciona_missao(struct mundo *w)
+{
+    if (!w || w->NMissoes >= MAX_MISSOES) return NULL;
+
+    struct missao *nova = cria_missao_aleatoria(w->NMissoes, w->TamanhoMundoX, w->TamanhoMundoY);
+    if (nova) {
+        w->M[w->NMissoes] = nova;
+        w->NMissoes++;
+    }
+    return nova;
+}
+
+// --- Funções de Destruição ---
 
 void destroi_heroi(struct heroi *h) {
-    if (!h) return;
-    cjto_destroi(h->Habilidades); // Destroi o TAD
-    free(h);                      // Libera o heroi
+    if (h) {
+        cjto_destroi(h->Habilidades);
+        free(h);
+    }
 }
 
 void destroi_base(struct base *b) {
-    if (!b) return;
-    cjto_destroi(b->presentes);   // Destroi o TAD
-    fila_destroi(b->Espera);      // Destroi o TAD
-    free(b);
+    if (b) {
+        cjto_destroi(b->presentes);
+        fila_destroi(b->Espera);
+        free(b);
+    }
 }
 
 void destroi_missao(struct missao *m) {
-    if (!m) return;
-    cjto_destroi(m->Habilidades);
-    free(m);
+    if (m) {
+        cjto_destroi(m->Habilidades);
+        free(m);
+    }
 }
 
-struct mundo *destroi_mundo(struct mundo *world) {
-    if (!world) return NULL;
+struct mundo *destroi_mundo(struct mundo *w) {
+    if (!w) return NULL;
 
-    // Libera todos os herois
-    for (int i = 0; i < world->NHerois; i++)
-        destroi_heroi(world->H[i]);
+    // Libera herois
+    for (int i = 0; i < w->NHerois; i++)
+        destroi_heroi(w->H[i]);
+
+    // Libera bases
+    for (int i = 0; i < w->NBases; i++)
+        destroi_base(w->B[i]);
+
+    // Libera missoes
+    for (int i = 0; i < w->NMissoes; i++)
+        destroi_missao(w->M[i]);
+
+    free(w);
+    return NULL;
+}
+
+//Eventos
+/*devem ser adicionaod à LEF*/
+
+viaja(heroi){
+
+    heroi-> posicao
+    //procurar a base mais próxima
+}
+
+chega{
+
+}
+
+
+espera{
+
+}
+
+desiste{
+
+}
+
