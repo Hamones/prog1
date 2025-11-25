@@ -1,23 +1,38 @@
-#ifndef THEBOYS
-#define THEBOYS
+#ifndef THEBOYS_H
+#define THEBOYS_H
 
-// Includes dos TADs
+// Bibliotecas necessárias para os tipos de dados
+#include "conjunto.h"
 #include "fila.h"
 #include "fprio.h"
-#include "conjunto.h"
 
-// --- Constantes Globais ---
-#define MAX_HEROIS      100   // Limite exemplo
-#define MAX_BASES       20    // Limite exemplo
-#define MAX_MISSOES     50    // Limite exemplo
-#define MAX_HABILIDADES 10    // Habilidades de 0 a 9
+// --- 1. Definições e Constantes (Atualizado) ---
+
+// Tempo
 #define T_INICIO        0
-#define T_FIM_DO_MUNDO  525600 // Exemplo: 1 ano em minutos
+#define T_FIM_DO_MUNDO  525600
 
-// Dimensões do mundo (usado para gerar coordenadas aleatórias)
-#define N_TAMANHO_MUNDO 20000 
+// Dimensões
+#define N_TAMANHO_MUNDO 20000
 
-// --- Códigos dos Eventos (para a FPRIO) ---
+// Quantidades Base
+#define N_HABILIDADES   10
+
+// Fórmulas Calculadas
+#define N_HEROIS        (N_HABILIDADES * 5)      // = 50
+#define N_BASES         (N_HEROIS / 5)           // = 10
+#define N_MISSOES       (T_FIM_DO_MUNDO / 100)   // = 5256
+#define N_COMPOSTOS_V   (N_HABILIDADES * 3)      // = 30
+
+// --- Mapeamento de Compatibilidade ---
+// As structs abaixo usam "MAX_" para definir o tamanho dos vetores.
+// Redirecionamos para os novos valores "N_".
+#define MAX_HEROIS      N_HEROIS
+#define MAX_BASES       N_BASES
+#define MAX_MISSOES     N_MISSOES
+#define MAX_HABILIDADES N_HABILIDADES
+
+// --- 2. Códigos dos Eventos ---
 #define EV_CHEGA   1
 #define EV_ESPERA  2
 #define EV_DESISTE 3
@@ -25,79 +40,99 @@
 #define EV_ENTRA   5
 #define EV_SAI     6
 #define EV_VIAJA   7
-#define EV_MISSAO  8
-#define EV_FIM     9
+#define EV_MORRE   8 // Ocupa lugar, aviso
+#define EV_MISSAO  9
+#define EV_FIM     10
 
-// --- Estrutura do Evento ---
-// Esta estrutura será o "void *item" armazenado na FPRIO
-struct evento {
-    int tempo;      // Momento em que ocorre
-    int tipo;       // EV_CHEGA, EV_SAI, etc.
-    int dado1;      // Geralmente ID do herói ou da missão
-    int dado2;      // Geralmente ID da base (destino ou origem)
-};
+// --- 3. Estruturas de Dados ---
 
-// --- Estruturas do Mundo ---
-
-struct heroi
-{
-    int ID;                // Identificador único
+struct heroi {
+    int ID;
     struct cjto_t *Habilidades; // Conjunto de habilidades
-    int Paciencia;         // Quão disposto está a esperar
-    int Velocidade;        // Velocidade de deslocamento
-    int experiencia;       // XP acumulado
-    int Base;              // ID da base atual (-1 se nenhuma)
+    int Paciencia;
+    int Velocidade;
+    int experiencia;
+    int Base; // ID da base onde está (-1 se viajando/fora)
+    int vivo; // 1 = vivo, 0 = morto
 };
 
-struct base
-{
-    int ID;                // Identificador único
-    int Lotacao;           // Capacidade máxima
-    struct cjto_t *presentes; // Conjunto de IDs dos heróis dentro da base
-    struct fila_t *Espera; // Fila de IDs dos heróis esperando
-    int local_x;           // Coordenada X
-    int local_y;           // Coordenada Y
+struct base {
+    int ID;
+    int Lotacao;
+    struct cjto_t *presentes; // IDs dos herois presentes
+    struct fila_t *Espera;    // Fila de espera (IDs)
+    int local_x;
+    int local_y;
+    
+    // Estatísticas
+    int n_missoes; // Quantas missões cumpriu
+    int max_fila;  // Tamanho máximo da fila registrado
 };
 
-struct missao
-{
-    int ID;                // Identificador único
+struct missao {
+    int ID;
     struct cjto_t *Habilidades; // Habilidades requeridas
-    int local_x;           // Coordenada X
-    int local_y;           // Coordenada Y
+    int local_x;
+    int local_y;
+    int total_tentativas; // Quantas vezes foi tentada
 };
 
-struct mundo
-{
-    int NHerois;           // Quantidade atual
-    struct heroi *H[MAX_HEROIS]; // Vetor de ponteiros
-    
+struct mundo {
+    int NHerois;
+    struct heroi *H[MAX_HEROIS]; // Vetor de ponteiros para herois
+
     int NBases;
-    struct base *B[MAX_BASES];
-    
+    struct base *B[MAX_BASES];   // Vetor de ponteiros para bases
+
     int NMissoes;
-    struct missao *M[MAX_MISSOES];
-    
+    struct missao *M[MAX_MISSOES]; // Vetor de ponteiros para missoes
+
+    int NCompostosV; // Estoque global de Composto V
+
+    int relogio; // Tempo atual do mundo
     int TamanhoMundoX;
     int TamanhoMundoY;
-    int relogio;           // Tempo atual da simulação
+    int n_eventos; // Contador total de eventos tratados
+
+    // Estatísticas Globais
+    int missoes_cumpridas;
+    int total_tentativas; // Soma de todas as tentativas de todas as missões
+    int max_tentativas;
+    int min_tentativas;
 };
 
-// --- Protótipos das Funções (implementadas em ftheboys.c) ---
+// Estrutura genérica para eventos na FPRIO
+struct evento {
+    int tempo; // Chave de prioridade
+    int tipo;  // EV_CHEGA, EV_SAI, etc.
+    int dado1; // Ex: ID do herói ou da missão
+    int dado2; // Ex: ID da base destino
+};
 
-// Criação e inicialização
+// --- 4. Protótipos das Funções (Interface) ---
+
+// Criação e Destruição
 struct mundo *cria_mundo();
-struct heroi *adiciona_heroi(struct mundo *world);
-struct base *adiciona_base(struct mundo *world);
-struct missao *adiciona_missao(struct mundo *world);
+struct mundo *destroi_mundo(struct mundo *w);
 
-// Destruição
-void destroi_heroi(struct heroi *h);
-void destroi_base(struct base *b);
-void destroi_missao(struct missao *m);
-struct mundo *destroi_mundo(struct mundo *world);
+struct heroi *adiciona_heroi(struct mundo *w);
+struct base *adiciona_base(struct mundo *w);
+struct missao *adiciona_missao(struct mundo *w);
 
-// Função auxiliar de aleatoriedade (útil para o main também)
+// Funções Auxiliares
 int aleat(int min, int max);
+struct evento *cria_evento(int tempo, int tipo, int dado1, int dado2);
+
+// Tratadores de Eventos
+void chega(struct mundo *w, struct fprio_t *lef, struct evento *ev);
+void espera(struct mundo *w, struct fprio_t *lef, struct evento *ev);
+void desiste(struct mundo *w, struct fprio_t *lef, struct evento *ev);
+void avisa(struct mundo *w, struct fprio_t *lef, struct evento *ev);
+void entra(struct mundo *w, struct fprio_t *lef, struct evento *ev);
+void evento_sai(int tempo, int id_heroi, int id_base, struct mundo *w, struct fprio_t *lef);
+void evento_viaja(int tempo, int id_heroi, int id_destino, struct mundo *w, struct fprio_t *lef);
+void evento_morre(int tempo, int id_heroi, int id_base, struct mundo *w, struct fprio_t *lef);
+void evento_missao(int tempo, int id_missao, struct mundo *w, struct fprio_t *lef);
+void evento_fim(int tempo, struct mundo *w);
 
 #endif

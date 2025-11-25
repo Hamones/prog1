@@ -47,8 +47,9 @@ struct fprio_t *fprio_destroi (struct fprio_t *f)
     {
         prox = atual->prox;
         
-        // Libera o item (conforme especificação do .h original)
-        // Isso é importante para liberar os eventos (struct evento*)
+
+        /*provável violação de TAD, porém segui a especificação de fprio.h 
+        "Libera todas as estruturas de dados da fila, inclusive os itens."*/
         if (atual->item)
             free(atual->item);
             

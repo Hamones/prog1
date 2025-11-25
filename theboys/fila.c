@@ -11,9 +11,10 @@
 // Retorno: ponteiro para a fila criada ou NULL se erro.
 struct fila_t *fila_cria ()
 {
+    // Aloca a estrutura da fila
     struct fila_t *f = malloc(sizeof(struct fila_t));
     if (!f)
-        return NULL; // Falha na alocação
+        return NULL;
 
     f->prim = NULL;
     f->ult = NULL;
@@ -30,21 +31,24 @@ struct fila_t *fila_destroi (struct fila_t *f)
         return NULL;
 
     struct fila_nodo_t *atual = f->prim;
-    struct fila_nodo_t *proximo;
+    struct fila_nodo_t *prox;
 
     while (atual)
     {
-        proximo = atual->prox;
-        // CORREÇÃO: Não fazemos free(atual->item) pois item é um int (ID)
-        free(atual); 
-        atual = proximo;
+        prox = atual->prox;
+        
+        // IMPORTANTE: Como o item é um 'int', NÃO fazemos free(atual->item).
+        // Apenas liberamos o nodo da lista encadeada.
+        free(atual);
+        
+        atual = prox;
     }
 
     free(f);
     return NULL;
 }
 
-// Insere um item no final da fila.
+// Insere um item (ID) no final da fila.
 // Retorno: 1 se sucesso, 0 se erro.
 int fila_insere (struct fila_t *f, int item)
 {
@@ -53,7 +57,7 @@ int fila_insere (struct fila_t *f, int item)
 
     struct fila_nodo_t *novo = malloc(sizeof(struct fila_nodo_t));
     if (!novo)
-        return 0; // Falha na alocação do nodo
+        return 0; // Falha na alocação
 
     novo->item = item;
     novo->prox = NULL;
@@ -62,7 +66,7 @@ int fila_insere (struct fila_t *f, int item)
     if (f->prim == NULL)
     {
         f->prim = novo;
-        f->ult = novo;
+        f->ult  = novo;
     }
     else
     {
@@ -71,33 +75,33 @@ int fila_insere (struct fila_t *f, int item)
     }
 
     f->num++;
-    return 1; // Sucesso
+    return 1;
 }
 
-// Retira o primeiro item da fila e o devolve no parâmetro *item.
-// Retorno: 1 se sucesso, 0 se erro ou fila vazia.
+// Retira o primeiro item da fila e o devolve no ponteiro *item.
+// Retorno: 1 se sucesso (item retirado), 0 se erro ou fila vazia.
 int fila_retira (struct fila_t *f, int *item)
 {
-    // Verifica fila inválida, fila vazia ou ponteiro de retorno nulo
+    // Validações básicas
     if (!f || f->prim == NULL || !item)
         return 0;
 
-    struct fila_nodo_t *nodo_removido = f->prim;
-    
-    // Salva o valor no endereço fornecido pelo usuário
-    *item = nodo_removido->item;
+    struct fila_nodo_t *removido = f->prim;
 
-    // Avança o ponteiro do início
-    f->prim = f->prim->prox;
+    // Retorna o valor (int) para o usuário
+    *item = removido->item;
 
-    // Se a fila ficou vazia, atualiza também o ponteiro 'ult'
+    // Avança a fila
+    f->prim = removido->prox;
+
+    // Se a fila ficou vazia, ajusta o ponteiro 'ult'
     if (f->prim == NULL)
         f->ult = NULL;
 
-    free(nodo_removido); // Libera apenas a estrutura do nodo
     f->num--;
+    free(removido); // Libera o nodo
 
-    return 1; // Sucesso
+    return 1;
 }
 
 // Informa o número de itens na fila.
@@ -106,22 +110,22 @@ int fila_tamanho (struct fila_t *f)
 {
     if (!f)
         return -1;
-    
+
     return f->num;
 }
 
-// Imprime o conteúdo da fila 
+// Imprime o conteúdo da fila no formato "Fila: [ 1 2 3 ]"
 void fila_imprime (struct fila_t *f)
 {
     if (!f)
         return;
 
     struct fila_nodo_t *atual = f->prim;
-    
+
     printf("Fila: [ ");
     while (atual)
     {
-        printf("%d ", atual->item); // CORREÇÃO: Imprime %d pois é int
+        printf("%d ", atual->item);
         atual = atual->prox;
     }
     printf("]\n");
