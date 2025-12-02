@@ -15,7 +15,7 @@
 int main ()
 {
     // iniciar o mundo
-    srand(0);
+    srand(0); /*não especifiado, logo tornei "fixo" para titulo de testes*/
 
     /*Criamos o mundo*/
     struct mundo *world = cria_mundo();
@@ -53,12 +53,12 @@ int main ()
             fprio_insere(fila_eventos, ev, EV_CHEGA, ev->tempo);
         }
     }
-
+    /*Criamos as bases*/
     for (int i = 0; i < N_BASES; i++){
         adiciona_base(world);
     }
 
-
+    /*Criamos as missões inciais*/
     for (int i = 0; i < N_MISSOES; i++){
         struct missao *m = adiciona_missao(world);
         if (!m)
@@ -75,7 +75,7 @@ int main ()
         }
     }
 
-
+    /*Fim do mundo*/
     struct evento *ev_fim = malloc(sizeof(struct evento));
     if (ev_fim) {
         ev_fim->tipo = EV_FIM;
@@ -85,8 +85,7 @@ int main ()
         fprio_insere(fila_eventos, ev_fim, EV_FIM, ev_fim->tempo);
     }
 
-
-
+/* Laço de Execução*/
     void *item;
     int tipo, prio;
 
@@ -139,8 +138,8 @@ int main ()
                 free(ev); 
                 
 
-                fprio_destroi(fila_eventos);
-                destroi_mundo(world);
+            fprio_destroi(fila_eventos);
+            destroi_mundo(world);
                 return 0; 
             
             default:

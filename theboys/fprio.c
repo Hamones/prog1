@@ -7,11 +7,12 @@
 #include <stdlib.h>
 #include "fprio.h"
 
-// --- Função Auxiliar Interna ---
+/* Função Auxiliar Interna  */
 
-// Verifica se um ponteiro de item já existe na fila
+/* Verifica se um ponteiro de item já existe na fila */
 int fprio_busca_item(struct fprio_t *f, void *item) {
-    struct fpnodo_t *atual = f->prim;
+    struct fpnodo_t *atual;
+    atual = f->prim;
     while (atual) {
         if (atual->item == item)
             return 1;
@@ -20,7 +21,7 @@ int fprio_busca_item(struct fprio_t *f, void *item) {
     return 0;
 }
 
-// --- Funções Principais ---
+/*  Funções Principais  */
 
 struct fprio_t *fprio_cria ()
 {
@@ -29,7 +30,7 @@ struct fprio_t *fprio_cria ()
         return NULL;
 
     f->prim = NULL;
-    f->fim  = NULL; // Nota: Em lista ordenada, 'fim' é menos útil, mas mantemos se a struct exigir
+    f->fim  = NULL; 
     f->num  = 0;
 
     return f;
@@ -40,7 +41,8 @@ struct fprio_t *fprio_destroi (struct fprio_t *f)
     if (!f)
         return NULL;
 
-    struct fpnodo_t *atual = f->prim;
+    struct fpnodo_t *atual;
+    atual = f->prim;
     struct fpnodo_t *prox;
 
     while (atual)
@@ -66,7 +68,7 @@ int fprio_insere (struct fprio_t *f, void *item, int tipo, int prio)
     if (!f || !item)
         return -1;
 
-    // Evita duplicatas de ponteiros
+    /* Evita duplicatas de ponteiros */
     if (fprio_busca_item(f, item))
         return -1;
 
@@ -79,21 +81,22 @@ int fprio_insere (struct fprio_t *f, void *item, int tipo, int prio)
     novo->prio = prio;
     novo->prox = NULL;
 
-    // Inserção Ordenada (Menor prioridade/tempo primeiro)
+    /* Inserção Ordenada (Menor prioridade/tempo primeiro) */
     
-    // Caso 1: Fila vazia ou novo item vem antes do primeiro
+    /* Caso 1: Fila vazia ou novo item vem antes do primeiro */
     if (f->prim == NULL || prio < f->prim->prio) {
         novo->prox = f->prim;
         f->prim = novo;
-        // Se era vazia, atualiza fim (se usado)
-        if (f->num == 0) f->fim = novo; 
+        /* Se era vazia, atualiza fim (se usado) */
+        if (f->num == 0) 
+            f->fim = novo; 
     } 
-    // Caso 2: Inserir no meio ou fim
+    /* Caso 2: Inserir no meio ou fim */
     else {
-        struct fpnodo_t *ant = f->prim;
+        struct fpnodo_t *ant;
+        ant = f->prim;
 
-        // Avança enquanto o próximo existir E tiver prioridade MENOR ou IGUAL
-        // (Isso garante FIFO para prioridades iguais)
+        /* Avança enquanto o próximo existir E tiver prioridade MENOR ou IGUAL */
         while (ant->prox != NULL && ant->prox->prio <= prio) {
             ant = ant->prox;
         }
@@ -101,8 +104,9 @@ int fprio_insere (struct fprio_t *f, void *item, int tipo, int prio)
         novo->prox = ant->prox;
         ant->prox = novo;
         
-        // Atualiza fim se inseriu no final
-        if (novo->prox == NULL) f->fim = novo;
+        /* Atualiza fim se inseriu no final */
+        if (novo->prox == NULL) 
+            f->fim = novo;
     }
 
     f->num++;
@@ -114,8 +118,10 @@ void *fprio_retira (struct fprio_t *f, int *tipo, int *prio)
     if (!f || f->prim == NULL || !tipo || !prio)
         return NULL;
 
-    struct fpnodo_t *primeiro = f->prim;
-    void *item_retornado = primeiro->item;
+    struct fpnodo_t *primeiro;
+    void *item_retornado;
+    primeiro = f->prim;
+    item_retornado = primeiro->item;
 
     *tipo = primeiro->tipo;
     *prio = primeiro->prio;
@@ -125,8 +131,7 @@ void *fprio_retira (struct fprio_t *f, int *tipo, int *prio)
     if (f->prim == NULL)
         f->fim = NULL;
 
-    // Nota: Não damos free(item_retornado) aqui, pois quem chamou precisa usá-lo.
-    // Apenas liberamos o nodo da lista.
+    /* Apenas liberamos o nodo da lista. */
     free(primeiro);
 
     f->num--;
@@ -135,13 +140,16 @@ void *fprio_retira (struct fprio_t *f, int *tipo, int *prio)
 
 int fprio_tamanho (struct fprio_t *f)
 {
-    if (!f) return -1;
+    if (!f) 
+    return -1;
+    
     return f->num;
 }
 
 void fprio_imprime (struct fprio_t *f)
 {
-    if (!f) return;
+    if (!f) 
+    return;
 
     struct fpnodo_t *atual = f->prim;
     while (atual) {
@@ -149,5 +157,4 @@ void fprio_imprime (struct fprio_t *f)
         if (atual->prox) printf(" ");
         atual = atual->prox;
     }
-    // Sem \n final conforme especificação comum, ou adicione se preferir
 }
